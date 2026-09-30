@@ -3,7 +3,7 @@
 [![Maintained by Acceliance](https://img.shields.io/badge/maintained%20by-Acceliance-0072C6)](https://github.com/acceliance)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-success)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/acceliance/Graph-Rag-Enterprise-Archicturecture?label=last%20commit)](https://github.com/acceliance/Graph-Rag-Enterprise-Archicturecture/commits/main)
-[![Docker Hub](https://img.shields.io/badge/images-Docker%20Hub-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/u/acceliance)
+[![Docker Hub](https://img.shields.io/badge/images-Docker%20Hub-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/repositories/acceliance)
 [![Neo4j](https://img.shields.io/badge/graph-Neo4j-4581C3?logo=neo4j&logoColor=white)](https://neo4j.com/)
 [![Qdrant](https://img.shields.io/badge/vectors-Qdrant-DC244C)](https://qdrant.tech/)
 [![Modelio](https://img.shields.io/badge/model-Modelio%205.4-5A8F29)](https://www.modelio.org/)
@@ -35,7 +35,7 @@ This repository holds everything to run that agent for enterprise architecture: 
 
 ## Quick start
 
-You need Docker Desktop (Windows, macOS) or Docker Engine 24+ with Compose v2, and an AI provider key for the chat, extraction and embedding roles (entered in the application, never in a file).
+The product runs from two images, `acceliance/graphrag-api` and `acceliance/graphrag-web`, published on the [Acceliance Docker Hub organisation](https://hub.docker.com/repositories/acceliance); the Compose file pulls them, nothing is built here. You need Docker Desktop (Windows, macOS) or Docker Engine 24+ with Compose v2, and an AI provider key for the chat, extraction and embedding roles (entered in the application, never in a file).
 
 ```powershell
 .\scripts\up.ps1        # Windows
@@ -83,4 +83,4 @@ The publishers keep the rights to these documents. Check [the rights notes](samp
 
 ## Licence
 
-The files of this repository (Compose file, scripts, schemas, model, documentation) are under the [Apache License 2.0](LICENSE). The product images are free of use under their own licence, described in [`LICENSE-IMAGES.md`](LICENSE-IMAGES.md). The sample PDFs are **not** covered by this licence: see [`samples/README.md`](samples/README.md#rights-and-usage).
+The files of this repository (Compose file, scripts, schemas, model, documentation) are under the [Apache License 2.0](LICENSE). The product images ([Docker Hub](https://hub.docker.com/repositories/acceliance)) are free of use under their own licence, described in [`LICENSE-IMAGES.md`](LICENSE-IMAGES.md). The sample PDFs are **not** covered by this licence: see [`samples/README.md`](samples/README.md#rights-and-usage).
