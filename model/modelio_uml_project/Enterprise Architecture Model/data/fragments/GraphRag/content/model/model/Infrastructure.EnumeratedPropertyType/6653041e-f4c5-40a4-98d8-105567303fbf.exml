@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="GraphRagNormaliseRule" version="4">
+  <OBJECT>
+    <ID name="GraphRagNormaliseRule" mc="Infrastructure.EnumeratedPropertyType" uid="6653041e-f4c5-40a4-98d8-105567303fbf"/>
+    <PID name="GraphRag" mc="Infrastructure.ModuleComponent" uid="55ef8ea2-852c-45a7-84f4-e3af7dcab4b4"/>
+    <ATTRIBUTES>
+      <ATT name="BaseType">Enumerate</ATT>
+      <ATT name="Name"><![CDATA[GraphRagNormaliseRule]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Litteral">
+        <OBJECT>
+          <ID name="trim" mc="Infrastructure.PropertyEnumerationLitteral" uid="2cbea7fb-1a1d-4c98-801b-6c73e752b290"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[trim]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="casefold" mc="Infrastructure.PropertyEnumerationLitteral" uid="f63c59e8-6754-4f35-9738-e4c799e2ee8e"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[casefold]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="digits" mc="Infrastructure.PropertyEnumerationLitteral" uid="dcfa12ba-8347-4a48-8c20-6a68f4884caa"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[digits]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="date" mc="Infrastructure.PropertyEnumerationLitteral" uid="621e07b3-5f2d-40fb-875b-122b2ba80db2"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[date]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="amount" mc="Infrastructure.PropertyEnumerationLitteral" uid="4e8e4a98-9588-4c7e-b7d9-7b2dda6d23df"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[amount]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="none" mc="Infrastructure.PropertyEnumerationLitteral" uid="548e1d49-45bf-4fa2-91d5-269ada96b4c4"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[none]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="Descriptor">
+        <OBJECT>
+          <ID name="" mc="Infrastructure.Note" uid="395d6ea3-c33b-4779-a5a2-0cbb0b01235f"/>
+          <ATTRIBUTES>
+            <ATT name="Content"><![CDATA[Graph-RAG identity value normalisation rule.]]></ATT>
+            <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+            <ATT name="Name"></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<ram-component manifest-version="2.0.02" name="CartographyManager" version="0" release="0" clevel="0" modelioVersion="5.4.01" provider="">
+  <description><![CDATA[]]></description>
+  <dependencies></dependencies>
+  <contributors></contributors>
+  <metamodels>
+    <metamodel name="Infrastructure" version="2.1.04"/>
+  </metamodels>
+  <roots>
+    <root metaclass="Infrastructure.ModuleComponent" name="CartographyManager" uuid="6cfe0a2f-3a8b-4354-a3c8-e9c46d3eacb8"/>
+  </roots>
+</ram-component>

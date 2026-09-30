@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="GraphRagEntity" version="4">
+  <OBJECT>
+    <ID name="GraphRagEntity" mc="Infrastructure.Stereotype" uid="019b5920-7db9-4bf8-8954-032fccc94563"/>
+    <PID name="GraphRagProfile" mc="Infrastructure.Profile" uid="07687c2d-6e08-423f-93cf-ca3a8df67d23"/>
+    <ATTRIBUTES>
+      <ATT name="Image"><![CDATA[res/icons/logo-acc-seul-16.png]]></ATT>
+      <ATT name="Icon"></ATT>
+      <ATT name="IsHidden">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="LabelKey"><![CDATA[%stereotype.GraphRagEntity.label]]></ATT>
+      <ATT name="BaseClassName"><![CDATA[Standard.Class]]></ATT>
+      <ATT name="Name"><![CDATA[GraphRagEntity]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedTable">
+        <COMPID name="PropertyTableDefinition" mc="Infrastructure.PropertyTableDefinition" uid="497feb8b-7955-4f5a-86e3-441d665b6643"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

@@ -1,0 +1,1210 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Application" version="4">
+  <OBJECT>
+    <ID name="Application" mc="Standard.Package" uid="e98c0e57-3df0-4d94-85db-45280bbcba6d"/>
+    <PID name="enterprisearchi" mc="Standard.Package" uid="ff059f17-ce56-48f2-bf1b-17a98c9881b8"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[Application]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedElement">
+        <COMPID name="DataObject" mc="Standard.Class" uid="2989baf4-11fc-4b20-aeb9-a035e23769e6"/>
+        <COMPID name="QualityRequirement" mc="Standard.Class" uid="34be5608-89ab-4593-adc0-b8b45be85386"/>
+        <COMPID name="ArchitectureDecision" mc="Standard.Class" uid="d061a5c1-297c-4440-93f8-fd81ece004ba"/>
+        <COMPID name="Component" mc="Standard.Class" uid="7c23e650-0fc6-4696-b0ca-6fc9419a4f1f"/>
+        <COMPID name="ApplicationSystem" mc="Standard.Class" uid="597ed8a0-00b7-4544-ae47-0a6673389e4e"/>
+        <OBJECT>
+          <ID name="QualityAttribute" mc="Standard.Enumeration" uid="304ddc01-be3a-47a3-af9d-b7cc8a6b2799"/>
+          <ATTRIBUTES>
+            <ATT name="IsElementary">true</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="IsLeaf">false</ATT>
+            <ATT name="IsRoot">false</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="Name"><![CDATA[QualityAttribute]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Value">
+              <OBJECT>
+                <ID name="AVAILABILITY" mc="Standard.EnumerationLiteral" uid="247bcdbd-76c8-4800-beef-363db9867c8b"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[AVAILABILITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="cb478161-05b1-48fa-b8b2-4b8528137c2e"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Availability, high availability, failover, continuity (disponibilité, PCA/PRA)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="PERFORMANCE" mc="Standard.EnumerationLiteral" uid="9fc85cab-8a92-46b9-b75e-3ed824d1a1fe"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[PERFORMANCE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="cc085bac-dd67-410b-9943-0dea86ef6197"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Response time, throughput, real-time constraints (performance, temps de réponse)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="SCALABILITY" mc="Standard.EnumerationLiteral" uid="b18abe35-5e5d-4ca4-a980-1d952b0c121b"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[SCALABILITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="77fa24eb-953e-4f08-987c-3ec1383c2147"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Capacity growth, volumes, multi-tenancy (scalabilité, dimensionnement)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="SECURITY" mc="Standard.EnumerationLiteral" uid="08ed300f-0881-40f5-a627-278bb84b2d11"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[SECURITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="6d91aefb-fcff-4da9-9e50-54e101cabcbb"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Confidentiality, integrity, authentication, privacy (sécurité, confidentialité)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="RELIABILITY" mc="Standard.EnumerationLiteral" uid="b04eb353-e50b-4bbf-9dab-d91d48af7d54"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[RELIABILITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="bd56b102-2a38-4534-a8d0-f7d955b4e1d1"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Reliability, data integrity, persistence (fiabilité)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="MAINTAINABILITY" mc="Standard.EnumerationLiteral" uid="b9cc46ec-18cf-46ec-b91c-8028d3117ad3"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[MAINTAINABILITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="98bd4bde-6dcd-45e2-adda-0b334c44259b"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Maintainability, modularity, extensibility (maintenabilité, évolutivité)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="USABILITY" mc="Standard.EnumerationLiteral" uid="21a6fb45-50b0-4a59-9719-0253f301a430"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[USABILITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="15e1d85c-51d6-4886-90c6-a10e6ebb2328"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Usability, accessibility (ergonomie, accessibilité)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="TESTABILITY" mc="Standard.EnumerationLiteral" uid="c07b2a75-42b6-4adc-a8e5-0916f3389047"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[TESTABILITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="1adb7982-3e31-4cf8-a21b-8afc43f459d4"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Testability]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="INTEROPERABILITY" mc="Standard.EnumerationLiteral" uid="ea93ff3c-9a32-4354-aeec-fa9023f132e1"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[INTEROPERABILITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="420e77da-0603-40e4-90ee-e0903dfc6863"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Interoperability, compatibility, standards compliance (interopérabilité)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="PORTABILITY" mc="Standard.EnumerationLiteral" uid="1141ab35-370a-4667-9533-62c895f834b2"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[PORTABILITY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="6ca61ac1-476b-45ea-9a9d-0fb397372a70"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Portability, cloud or platform independence (portabilité)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="COMPLIANCE" mc="Standard.EnumerationLiteral" uid="ff485a4b-85ff-4289-bec6-843194a81479"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[COMPLIANCE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="d3d0fc8c-f5fd-4517-890c-42ffd29a9510"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Legal or regulatory compliance (HIPAA, RGPD, PCI, archival law)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="bcd33ce9-96ca-4aa4-90cd-317dc0b5de3f"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[Quality attribute addressed by a requirement or constraint]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="ComponentKind" mc="Standard.Enumeration" uid="4fa531d6-b781-4579-9e2d-cccd14e3d4d6"/>
+          <ATTRIBUTES>
+            <ATT name="IsElementary">true</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="IsLeaf">false</ATT>
+            <ATT name="IsRoot">false</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="Name"><![CDATA[ComponentKind]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Value">
+              <OBJECT>
+                <ID name="SUBSYSTEM" mc="Standard.EnumerationLiteral" uid="43bb47cf-67fd-4433-a9dc-c71ebb484f0e"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[SUBSYSTEM]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="428df279-3b60-4831-b733-a6593072e2ce"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A major subsystem (Content Management Subsystem, DFE, DSS)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="MODULE" mc="Standard.EnumerationLiteral" uid="baa4b6c1-8953-4836-93b0-9837970387cb"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[MODULE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="e53d7c5a-82e4-4fb1-83aa-4b73caaf1c39"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A functional module or package]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="SERVICE" mc="Standard.EnumerationLiteral" uid="909f9964-4e48-4663-a348-744ebb050ed0"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[SERVICE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="74926d58-b139-422a-a169-447730225531"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A business or technical service, microservice or API (SA-BS, ingest-external, service registry)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="USER_INTERFACE" mc="Standard.EnumerationLiteral" uid="85d9aa94-7bae-4faa-a861-0a8e671ca716"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[USER_INTERFACE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="90ff8173-bc29-4805-aaef-be756b0b793a"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A user interface, screen or web application (Login-UI, MAP-UI, IHM)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="DATABASE" mc="Standard.EnumerationLiteral" uid="6bfb1023-980e-429b-9e46-adb3a27989a7"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[DATABASE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="74ddfc01-1ed7-45b3-a200-e29fe908de7f"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A database instance or schema (base MySQL, Oracle SQL database, MongoDB)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="DATA_STORE" mc="Standard.EnumerationLiteral" uid="44d20343-48a8-4af6-a038-1687bb75bc9b"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[DATA_STORE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="ee66f250-2d77-4eb0-ac81-c80c842b391e"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A non-database store: file share, object storage, cache, index (Data Store, offre S3, Elasticsearch index)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="BATCH_JOB" mc="Standard.EnumerationLiteral" uid="d5ea0fb5-fcb3-4cda-9946-665ff1b19668"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[BATCH_JOB]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="b0ec6806-0144-47a8-bb06-5bd713009be4"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A scheduled batch process or pipeline (batch-report, Pipelines, extraction nocturne)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="CONNECTOR" mc="Standard.EnumerationLiteral" uid="db0b65e6-0e91-4502-ac2e-cb31663623f8"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[CONNECTOR]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="cc9bb410-89af-4b5e-9f61-cac181e326d2"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A driver, adapter or connector to an external system (Drivers, EDI translator)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="LIBRARY" mc="Standard.EnumerationLiteral" uid="81064661-3a77-46bb-96e8-e78f403f55c5"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[LIBRARY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="ca9a0951-03a9-498c-b3d2-5a0ef855c29a"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A shared library or framework component (bibliothèque structurante)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="INFRASTRUCTURE_SERVICE" mc="Standard.EnumerationLiteral" uid="761134a6-f3f8-45d9-ac03-34dbdc27bea7"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[INFRASTRUCTURE_SERVICE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="94f3b377-0b4e-4e23-a631-5bdbfb279f0e"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A technical service such as logging, monitoring, deployment, authentication (chaîne de logs, moteur de déploiement)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="3d266e92-3fca-4b82-bda1-908e585643ac"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[Kind of component inside a system]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="ApplicationKind" mc="Standard.Enumeration" uid="5faf02db-10ce-4703-9b25-0446b0590800"/>
+          <ATTRIBUTES>
+            <ATT name="IsElementary">true</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="IsLeaf">false</ATT>
+            <ATT name="IsRoot">false</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="Name"><![CDATA[ApplicationKind]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Value">
+              <OBJECT>
+                <ID name="BUSINESS_APPLICATION" mc="Standard.EnumerationLiteral" uid="b0b21dd1-863e-4cab-a60e-32d9d2678078"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[BUSINESS_APPLICATION]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="dbb10d63-298e-43a6-881e-b1405dd6ac44"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[An application supporting business processes (MMIS, STARS, dossier patient, caisse)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="PORTAL" mc="Standard.EnumerationLiteral" uid="e15c4593-428e-4e83-a991-f50a4415e55c"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[PORTAL]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="c66f2d34-9083-4e6e-8f58-46071730bb20"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A public or internal web portal (GovInfo, Vermont Health Connect)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="MOBILE_APPLICATION" mc="Standard.EnumerationLiteral" uid="c9701d4c-6eda-4867-a622-d4909ef4030f"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[MOBILE_APPLICATION]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="c68fd54b-b9f8-42bc-b6b9-ae11a65cb88f"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A mobile app (LocAdoc)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="INTEGRATION_PLATFORM" mc="Standard.EnumerationLiteral" uid="6137bb8b-f0d4-441f-9baf-c0fd26c78f03"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[INTEGRATION_PLATFORM]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="9a1dc1eb-4b11-4b4c-a1a6-616c22f7b757"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[ESB, API gateway, EDI translator, file transfer hub]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="DATA_PLATFORM" mc="Standard.EnumerationLiteral" uid="a8b4d444-49fe-4885-9087-2b08d8ded7d7"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[DATA_PLATFORM]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="f0ec9cdf-eb43-43b2-97de-7cf07be5f9f6"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Data warehouse, data lake, reporting or BI platform, health information exchange]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="TECHNICAL_PLATFORM" mc="Standard.EnumerationLiteral" uid="099fa1e4-0167-4901-9fe5-8c2d7d546f8c"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[TECHNICAL_PLATFORM]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="c767284f-9253-47ce-8df0-61e58eedef62"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A shared technical platform: archiving system, GIS server, identity provider, document management]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="EXTERNAL_SYSTEM" mc="Standard.EnumerationLiteral" uid="0d956981-8497-4fcc-a53a-276686971956"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[EXTERNAL_SYSTEM]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="66013e1b-172a-4602-be3d-ca409dae9d68"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A partner's or another organisation's system the landscape exchanges with (Medicare Beneficiary Database, collection agency system, Shibboleth)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="INFRASTRUCTURE_SYSTEM" mc="Standard.EnumerationLiteral" uid="4bf8fbb3-3bc7-487e-8e68-c700d8e6c1da"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[INFRASTRUCTURE_SYSTEM]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="ad564df7-290d-4409-85f5-105d5ac7f6bb"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Messaging, telephony, backup, monitoring systems treated as applications (Exchange, PBX, RightFax)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="3c1b30ac-6379-46ed-9c35-69c91a9221ce"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[Kind of application system]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="LifecycleStatus" mc="Standard.Enumeration" uid="ced64d0e-73c2-4b3c-948f-c56d21c40efa"/>
+          <ATTRIBUTES>
+            <ATT name="IsElementary">true</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="IsLeaf">false</ATT>
+            <ATT name="IsRoot">false</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="Name"><![CDATA[LifecycleStatus]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Value">
+              <OBJECT>
+                <ID name="PLANNED" mc="Standard.EnumerationLiteral" uid="2ceb76cd-6906-4663-bea9-5bb551429b97"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[PLANNED]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="3ba2e9cd-1070-4c28-a26f-f95684a5c920"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Planned or in procurement, not yet built (cible, à venir)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="IN_DEVELOPMENT" mc="Standard.EnumerationLiteral" uid="8d90d272-3170-4fa6-a13e-07e3d1130ef5"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[IN_DEVELOPMENT]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="b8305d0a-9ab0-4eb7-8f77-f3f822f91a84"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Under development or in a release cycle (en cours de développement)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="IN_PRODUCTION" mc="Standard.EnumerationLiteral" uid="ca36cefb-dd37-4045-8b89-9bfc7a794cda"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[IN_PRODUCTION]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="05c15efc-e239-416b-a9e3-ee20fabef038"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[In production, current (en production)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="LEGACY" mc="Standard.EnumerationLiteral" uid="f63137ab-eec9-4751-8164-41b1999f534b"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[LEGACY]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="390f2ef9-4ccf-4a26-873d-7cc1e748bbf2"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[In production but outdated or to be replaced (legacy, mainframe, obsolète)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="DECOMMISSIONING" mc="Standard.EnumerationLiteral" uid="9ccdda7b-9c0a-4f45-be9e-8c74a2caf2dd"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[DECOMMISSIONING]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="5eaa5d19-760e-410a-a6f3-25c3c5969885"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Being replaced or phased out (en cours de décommissionnement, transition)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="RETIRED" mc="Standard.EnumerationLiteral" uid="3ee479e8-58a1-4df2-af09-097c9c790577"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[RETIRED]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="50e69982-a9b6-4e43-a0c1-cd9e4f3968e0"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[No longer in use (décommissionné, replaced by)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="8b879357-6f7a-4cd9-af92-541808a9b47d"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[Lifecycle status of an application system]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="HostingModel" mc="Standard.Enumeration" uid="36f8553b-dfd1-4a8a-9517-7c374b58d1cc"/>
+          <ATTRIBUTES>
+            <ATT name="IsElementary">true</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="IsLeaf">false</ATT>
+            <ATT name="IsRoot">false</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="Name"><![CDATA[HostingModel]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Value">
+              <OBJECT>
+                <ID name="ON_PREMISE" mc="Standard.EnumerationLiteral" uid="d6266339-deaa-4477-9e00-8554e06fefb4"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[ON_PREMISE]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="39a2c91b-c7ce-4125-8cb6-a713cbd0eaa2"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[In the organisation's own data center or server rooms (sur site, hébergement interne)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="MAINFRAME" mc="Standard.EnumerationLiteral" uid="037fef22-b970-4ee9-b960-ee388575f7a1"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[MAINFRAME]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="0b5a3020-b42a-4c0a-9b1a-8f863ced3cca"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[On a mainframe]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="PRIVATE_CLOUD" mc="Standard.EnumerationLiteral" uid="566a4fd3-39bc-4387-9cd1-a313de3d516c"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[PRIVATE_CLOUD]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="4d96b627-61d0-44fb-8c23-5ec1240292f0"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[In a private or government cloud]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="PUBLIC_CLOUD" mc="Standard.EnumerationLiteral" uid="85f8b9e7-fc16-4e4a-9207-9067535e7c6d"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[PUBLIC_CLOUD]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="c1a74531-d07c-442c-bb3b-2680b3a11c54"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[On a public cloud provider's infrastructure (AWS, Azure, Digital Ocean)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="SAAS" mc="Standard.EnumerationLiteral" uid="ca3772c4-d3b1-44b9-8fbe-710ebf696c0d"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[SAAS]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="03cc1006-7598-441f-9751-f308ac7fa7e4"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[Delivered as a service by the vendor (SaaS, multi-instance hébergé par l'éditeur)]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="HYBRID" mc="Standard.EnumerationLiteral" uid="0aa35b69-469f-410a-b267-e2060fa6f114"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[HYBRID]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="Descriptor">
+                    <OBJECT>
+                      <ID name="" mc="Infrastructure.Note" uid="43495764-503a-4dde-b015-5c4fe14b9a17"/>
+                      <ATTRIBUTES>
+                        <ATT name="Content"><![CDATA[A mix of on-premise and cloud]]></ATT>
+                        <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                        <ATT name="Name"></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES>
+                        <LINK relation="Model">
+                          <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                        </LINK>
+                      </DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="09c16378-cce9-420d-b683-e97964d89e1d"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[Where and how an application system is hosted]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

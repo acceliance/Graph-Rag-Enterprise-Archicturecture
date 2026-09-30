@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="ExcelUtils" version="4">
+  <OBJECT>
+    <ID name="ExcelUtils" mc="Infrastructure.ModuleComponent" uid="fa1e4084-bc47-4c3b-9831-d8cf7f78986b"/>
+    <ATTRIBUTES>
+      <ATT name="LicenseKey">0</ATT>
+      <ATT name="MajVersion">5</ATT>
+      <ATT name="MinVersion">4</ATT>
+      <ATT name="MinMinVersion"><![CDATA[1]]></ATT>
+      <ATT name="MinBinVersionCompatibility"></ATT>
+      <ATT name="JavaClassName"><![CDATA[fr.acceliance.modelio.excelutils.impl.ExcelUtilsModule]]></ATT>
+      <ATT name="Name"><![CDATA[ExcelUtils]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES></DEPENDENCIES>
+  </OBJECT>
+</EXT>

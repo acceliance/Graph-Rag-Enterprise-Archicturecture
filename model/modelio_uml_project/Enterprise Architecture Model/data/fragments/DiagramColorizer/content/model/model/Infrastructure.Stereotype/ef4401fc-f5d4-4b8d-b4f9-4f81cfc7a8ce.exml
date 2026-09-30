@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="DiagramColorizerColorClass" version="4">
+  <OBJECT>
+    <ID name="DiagramColorizerColorClass" mc="Infrastructure.Stereotype" uid="ef4401fc-f5d4-4b8d-b4f9-4f81cfc7a8ce"/>
+    <PID name="DiagramColorizerProfile" mc="Infrastructure.Profile" uid="f82ec883-4412-4eab-85cd-32fe69654131"/>
+    <ATTRIBUTES>
+      <ATT name="Image"><![CDATA[res/icons/logo-acc-seul-16.png]]></ATT>
+      <ATT name="Icon"></ATT>
+      <ATT name="IsHidden">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="LabelKey"><![CDATA[ClassColor]]></ATT>
+      <ATT name="BaseClassName"><![CDATA[Standard.GeneralClass]]></ATT>
+      <ATT name="Name"><![CDATA[DiagramColorizerColorClass]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedTable">
+        <COMPID name="PropertyTableDefinition" mc="Infrastructure.PropertyTableDefinition" uid="e3e98e18-a2f1-4621-87bb-b1dfb1632470"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="CartographyManagerRootOfTheModel" version="4">
+  <OBJECT>
+    <ID name="CartographyManagerRootOfTheModel" mc="Infrastructure.Stereotype" uid="6a39137e-8d53-4358-8a20-41bdf91c9218"/>
+    <PID name="CartographyManagerProfile" mc="Infrastructure.Profile" uid="C563B0C9-8BF9-4BEE-93B9-F89DED4E9584"/>
+    <ATTRIBUTES>
+      <ATT name="Image"><![CDATA[res/icons/logo-acc-seul-16.png]]></ATT>
+      <ATT name="Icon"></ATT>
+      <ATT name="IsHidden">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="LabelKey"><![CDATA[RootOfTheModel]]></ATT>
+      <ATT name="BaseClassName"><![CDATA[Package]]></ATT>
+      <ATT name="Name"><![CDATA[CartographyManagerRootOfTheModel]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedTable">
+        <COMPID name="PropertyTableDefinition" mc="Infrastructure.PropertyTableDefinition" uid="a62954af-2503-49e6-a1c9-876db56c44d4"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

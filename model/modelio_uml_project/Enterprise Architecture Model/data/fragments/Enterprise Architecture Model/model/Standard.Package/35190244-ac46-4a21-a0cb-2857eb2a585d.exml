@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="com" version="4">
+  <OBJECT>
+    <ID name="com" mc="Standard.Package" uid="35190244-ac46-4a21-a0cb-2857eb2a585d"/>
+    <PID name="root" mc="Standard.Package" uid="635ad99e-5516-49c4-8965-1dd6f7ddac7c"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[com]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedElement">
+        <COMPID name="yourcompany" mc="Standard.Package" uid="fe1b2d88-ce80-4023-b161-0e383da2dd0b"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

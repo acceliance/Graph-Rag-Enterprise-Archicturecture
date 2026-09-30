@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<ram-component manifest-version="2.0.02" name="DiagramColorizer" version="0" release="0" clevel="0" modelioVersion="5.4.01" provider="">
+  <description><![CDATA[]]></description>
+  <dependencies></dependencies>
+  <contributors></contributors>
+  <metamodels>
+    <metamodel name="Infrastructure" version="2.1.04"/>
+  </metamodels>
+  <roots>
+    <root metaclass="Infrastructure.ModuleComponent" name="DiagramColorizer" uuid="a6d596f2-440b-4f56-883a-dbe61bf3d804"/>
+  </roots>
+</ram-component>

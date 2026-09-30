@@ -1,0 +1,2096 @@
+{
+  "$schema": "https://raw.githubusercontent.com/acceliance/Graph-Rag-Deploy/main/schemas/schema_uml_model.json",
+  "modelStereotypes": [
+    {
+      "name": "GraphRagEntity",
+      "moduleName": "GraphRag",
+      "description": "Graph-RAG settings of a class: match strategy, relevance anchor, extraction hints and group.",
+      "stereotypeProperties": [
+        {
+          "name": "graphRagMatch",
+          "type": "ENUMERATE",
+          "description": "exact | fuzzy: how an extracted instance is matched to existing entities"
+        },
+        {
+          "name": "graphRagFuzzyThreshold",
+          "type": "FLOAT",
+          "description": "Score (0-1) at or above which a fuzzy match merges automatically; empty = 0.92"
+        },
+        {
+          "name": "graphRagReviewBand",
+          "type": "FLOAT",
+          "description": "Score (0-1) at or above which, below the threshold, a pair goes to review; empty = 0.75"
+        },
+        {
+          "name": "graphRagAnchor",
+          "type": "ENUMERATE",
+          "description": "auto | true | false: whether the relevance gate uses this class; auto = when identified"
+        },
+        {
+          "name": "graphRagExtractionHints",
+          "type": "TEXT",
+          "description": "Free text appended to the extraction prompt: labels, formats, where values appear"
+        },
+        {
+          "name": "graphRagGroup",
+          "type": "STRING",
+          "description": "Extraction group; empty = the class's domain"
+        }
+      ]
+    },
+    {
+      "name": "GraphRagIdentity",
+      "moduleName": "GraphRag",
+      "description": "The attribute is part of the class's identity key.",
+      "stereotypeProperties": [
+        {
+          "name": "graphRagIdentityOrder",
+          "type": "INTEGER",
+          "description": "Position in a composite identity key (1-based); empty = declaration order"
+        },
+        {
+          "name": "graphRagNormalise",
+          "type": "ENUMERATE",
+          "description": "trim | casefold | digits | date | amount | none; empty = the default of the type"
+        }
+      ]
+    },
+    {
+      "name": "GraphRagEmbed",
+      "moduleName": "GraphRag",
+      "description": "The String attribute is indexed on its own in the vector store.",
+      "stereotypeProperties": []
+    }
+  ],
+  "classes": [
+    {
+      "name": "Organisation",
+      "domain": "Governance",
+      "description": "An organisation named in an architecture document: the agency, department or IT directorate that issues or owns systems (PBGC, GPO, FDOT District 5, VITA, DSI du CHSE), a vendor or integrator (Kapsch, SwRI, Gainwell, DXC, Net-Assembly), a hosting provider (Digital Ocean) or a consortium.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Name as printed, in full (U.S. Government Publishing Office, Centre Hospitalier Sud Essonne)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "acronym",
+          "type": "String",
+          "description": "Acronym printed next to the name or used alone in the text (GPO, FDOT, DIT-T, VITA, CHSE, OIMT)"
+        },
+        {
+          "name": "country",
+          "type": "String",
+          "description": "Country or state/region when stated (Vermont, North Carolina, France)"
+        }
+      ],
+      "relations": [
+        {
+          "name": "kind",
+          "target": {
+            "name": "OrganisationKind"
+          },
+          "cardinality": "OneToOne",
+          "description": "Role the organisation plays in the documents"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.92"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.75"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Organisations appear on the cover page ('Prepared by', 'Published by', 'Edition :', 'Prepared for'), in the document control table ('Created By', 'Reviewed By', 'Approved By' followed by a name and an organisation), in copyright lines and in the text as the owner, operator, vendor or maintainer of a system ('maintained by DIT-T', 'hébergé chez Digital Ocean'). Use the full name as name and put the acronym in acronym; when only an acronym is printed, use it as the name."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "governance"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Person",
+      "domain": "Governance",
+      "description": "A named person: author, reviewer, approver or point of contact of an architecture document, or a role holder named in the text (Chief Information Officer, Chief Enterprise Architect, project manager).",
+      "attributes": [
+        {
+          "name": "fullName",
+          "type": "String",
+          "description": "First name and last name as printed (Clay Weston, Vadim Chepegin, Abhi Jay Krishnan)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "role",
+          "type": "String",
+          "description": "Role or title as printed (Project Manager, MBDSS Program Manager, State Auditor, Faculty Coach, Chef de projet)"
+        },
+        {
+          "name": "email",
+          "type": "String",
+          "description": "E-mail address when printed"
+        }
+      ],
+      "relations": [
+        {
+          "name": "organisation",
+          "target": "Organisation",
+          "cardinality": "ManyToOne",
+          "description": "The organisation the person belongs to, when printed next to the name ('Clay Weston, SwRI', 'Tushar Patel, FDOT')"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.94"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.80"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "People are printed on the cover ('Prepared by:', 'Edited by:', 'Contributors:', 'Team Members:', 'Rédigé par'), in the document control or approval table (Created By / Reviewed By / Approved By, 'Printed Name', 'Signature') and in revision histories ('Author', 'Primary Author(s)'). Do not extract fictional characters of worked examples."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "governance"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BusinessArea",
+      "domain": "Business",
+      "description": "A top-level business domain or line of business that groups business capabilities and processes: MITA business areas (Business Relationship Management, Care Management, Eligibility & Enrollment Management, Financial Management), a state's lines of business, a hospital's 'pôles', an agency's mission areas.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Name of the business area as printed (Eligibility & Enrollment Management, Driver Services, Gestion administrative du patient)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "description": "Short code printed before the name when the framework uses one (MITA: BR, CM, CO, EE, FM, MM, OM, PE, PL, PM)"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "Overview paragraph of the business area",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        }
+      ],
+      "relations": [],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.92"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.75"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Business areas are section headings of the form '3.5 EE -- Eligibility & Enrollment Management' in MITA self-assessments, rows of a business capability matrix, or 'lines of business' / 'domaines métier' lists in EA blueprints and master plans (schéma directeur)."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "business"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BusinessCapability",
+      "domain": "Business",
+      "description": "A business capability or business process that the organisation performs and that systems support: a MITA business process (EE01 Determine Member Eligibility, CM02 Manage Case Information), a DMV service (issue driver licence credentials, vehicle titling and registration), a hospital function (dossier patient informatisé, facturation), an EA blueprint business function.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Name of the capability or process as printed (Determine Member Eligibility, Manage Provider Recoupment, Records and monitors license plates and vehicle ownership)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "description": "Process code printed before the name when the framework uses one (EE01, CM07, FM15)"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "Description of what the capability covers, including findings and gap analysis text",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        },
+        {
+          "name": "currentMaturity",
+          "type": "Integer",
+          "description": "Current (As-Is) maturity level when a maturity scale is printed (MITA 'As Is MML 1' to 5)"
+        },
+        {
+          "name": "targetMaturity",
+          "type": "Integer",
+          "description": "Target (To-Be) maturity level when printed (MITA 'To Be MML')"
+        }
+      ],
+      "relations": [
+        {
+          "name": "businessArea",
+          "target": "BusinessArea",
+          "cardinality": "ManyToOne",
+          "description": "The business area the capability belongs to (the section or matrix row group it is printed under)"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.92"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.75"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Capabilities are printed as numbered sub-headings 'EE01 -- Determine Member Eligibility' with 'As Is' / 'To Be' maturity levels, as rows of a 'Business Capability Matrix', as the service described next to each legacy system ('SADLS: Issues Driver License Credentials'), or as 'processus métier' / 'fonctions' in French documents. Extract one entity per process, not per paragraph."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "business"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Technology",
+      "domain": "Technology",
+      "description": "A technology product, platform, protocol or standard named in the documents: an operating system (Windows Server, Solaris, Ubuntu 22.04), a database (Oracle, MySQL 8, MongoDB, SQL Server), middleware (WebSphere, ESB, Elasticsearch), network or security equipment (Cisco Nexus, Palo Alto, Aruba), storage (Swift, S3, Nimble), an end-user device (Dell Optiplex), a language or framework (PHP, J2EE, .NET) or a standard or protocol (OAIS, HIPAA 5010, X12 834, SFTP, TLS, REST).",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Product, protocol or standard name as printed, without the version (Microsoft SQL Server, VMware vSphere, Palo Alto, MongoDB, SFTP)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "version",
+          "type": "String",
+          "description": "Version or release when printed (22.04, 8, 2019, 5010, v3)"
+        }
+      ],
+      "relations": [
+        {
+          "name": "vendor",
+          "target": "Organisation",
+          "cardinality": "ManyToOne",
+          "description": "The vendor or standards body when named (Microsoft, Cisco, The Open Group, W3C)"
+        },
+        {
+          "name": "category",
+          "target": {
+            "name": "TechnologyCategory"
+          },
+          "cardinality": "OneToOne",
+          "description": "Category of technology"
+        },
+        {
+          "name": "status",
+          "target": {
+            "name": "TechnologyStatus"
+          },
+          "cardinality": "OneToOne",
+          "description": "Lifecycle status in the organisation's standards when printed (standard, emerging, retiring)"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.90"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.75"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Technologies appear in standards catalogs as 'Component / Standard / Version' columns, in 'Third Party Components', 'COTS', 'Composants logiciels utilisés', 'Biblothèques structurantes' and 'Requis' lists, in infrastructure descriptions ('serveurs Linux (Ubuntu 22.04)', 'Base de données : MySQL 8') and in text ('Oracle SQL database', 'Shibboleth for authentication'). One entity per product, with the version in version, not in the name. Vendors go to the Organisation class and are linked through vendor."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "infrastructure"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Site",
+      "domain": "Infrastructure",
+      "description": "A physical or cloud location where systems run: a data center, a server room ('salle serveurs'), a hospital or agency site, a cloud region or a hosting provider's data centers ('data centers européens', 'Data Center US Geographical Based').",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Name of the site as printed (site de Dourdan, site d'Etampes, GPO Data Center, Azure UK South)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "location",
+          "type": "String",
+          "description": "City, region or country when printed (Raleigh NC, Europe)"
+        }
+      ],
+      "relations": [
+        {
+          "name": "kind",
+          "target": {
+            "name": "SiteKind"
+          },
+          "cardinality": "OneToOne",
+          "description": "Kind of site"
+        },
+        {
+          "name": "operator",
+          "target": "Organisation",
+          "cardinality": "ManyToOne",
+          "description": "The organisation that operates the site when named (Digital Ocean, the state IT department)"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.92"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.75"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Sites are named in infrastructure sections and network diagrams: 'deux salles serveurs', 'sur chacun des deux sites', 'hébergé chez Digital Ocean, en data centers européens', 'Data Center', 'Location'. Extract one entity per distinct site; when a document only says 'two sites' without names, extract nothing."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "infrastructure"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NetworkZone",
+      "domain": "Infrastructure",
+      "description": "A network zone or security tier that separates components: DMZ, application zone, data zone, administration zone, 'zone d'accès', 'zone de stockage', VITAM 'découpage en zones', an internal network or a VPN tunnel to a partner.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Name of the zone as printed (DMZ, zone applicative, zone données, Science DMZ, Internal Network)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "What the zone hosts and the filtering rules applied to it"
+        }
+      ],
+      "relations": [
+        {
+          "name": "site",
+          "target": "Site",
+          "cardinality": "ManyToOne",
+          "description": "The site the zone belongs to, when the document ties zones to a site"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Zones appear in 'Découpage en zones', 'network zoning', 'Network Diagram' and security sections, and as the zones a flow crosses ('zones réseau traversées par les flux'). One entity per named zone."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "infrastructure"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "InfrastructureNode",
+      "domain": "Infrastructure",
+      "description": "A piece of infrastructure that hosts or connects components: a physical or virtual server, a mainframe, a cluster node, a network device (core switch, firewall, wireless access point), a storage array, an appliance (UPS, backup appliance), a cloud instance or an end-user device model. Named by its hostname, role or model as printed.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Hostname, role name or model as printed (serveur de réplication, coeur de réseau, DMV mainframe, HPE ProLiant, Cisco Nexus core switch)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "quantity",
+          "type": "Integer",
+          "description": "Number of identical nodes when printed ('3 x', 'double coeur de réseau' = 2)"
+        },
+        {
+          "name": "cpuCount",
+          "type": "Integer",
+          "description": "Number of CPUs or vCPUs when printed"
+        },
+        {
+          "name": "memoryGb",
+          "type": "Double",
+          "description": "RAM in gigabytes when printed (Go, GB)"
+        },
+        {
+          "name": "storageGb",
+          "type": "Double",
+          "description": "Local or attached storage in gigabytes when printed (convert To/TB to GB)"
+        },
+        {
+          "name": "bandwidth",
+          "type": "String",
+          "description": "Link bandwidth for network nodes and links as printed (350 Mbit, 10 Gbps)"
+        }
+      ],
+      "relations": [
+        {
+          "name": "kind",
+          "target": {
+            "name": "NodeKind"
+          },
+          "cardinality": "OneToOne",
+          "description": "Kind of node"
+        },
+        {
+          "name": "environment",
+          "target": {
+            "name": "EnvironmentKind"
+          },
+          "cardinality": "OneToOne",
+          "description": "Environment the node belongs to when printed (production, test, PRA)"
+        },
+        {
+          "name": "technology",
+          "target": "Technology",
+          "cardinality": "ManyToOne",
+          "description": "The main product or operating system running on the node (Windows Server, VMware vSphere, Ubuntu 22.04)"
+        },
+        {
+          "name": "zone",
+          "target": "NetworkZone",
+          "cardinality": "ManyToOne",
+          "description": "The network zone the node sits in, when stated"
+        },
+        {
+          "name": "site",
+          "target": "Site",
+          "cardinality": "ManyToOne",
+          "description": "The site or data center hosting the node, when stated"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Nodes appear in 'Infrastructure technique', 'Physical Architecture', 'Deployment Diagram', 'Network Diagram', sizing tables ('dimensionnement': CPU / RAM / disque per server) and standards catalogs ('Server Hardware: HPE Proliant', 'Core/Peripheral Switch: Cisco Nexus'). Use the role or hostname as name; the product goes to technology. Do not create a node for a product that is only listed as a standard without an instance."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "infrastructure"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DataObject",
+      "domain": "Application",
+      "description": "A business data object that systems store or exchange: member eligibility, provider record, claim, crash report, vehicle registration, driver licence, commande (order), dossier patient, archival information package (SIP/AIP/DIP), metadata. Named at the level documents use, not at the field level.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Name of the data object as printed (Provider Network Data, Medicare beneficiary eligibility, Placement, Commande, Archival Information Package)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "What the data object contains, as described in data model or file description sections",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        },
+        {
+          "name": "sensitivity",
+          "type": "String",
+          "description": "Confidentiality or regulatory classification when printed (PHI, PII, HIPAA, données de santé, secret)"
+        }
+      ],
+      "relations": [],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.92"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.75"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Data objects are named in 'Logical Data Model', 'Information Packages', 'User View of Data', 'Data Exchanges' tables, 'Structure d'une commande' and 'données' sections, and as the subject of each interface file (Placement, Payment and Adjustments, Demographic). Extract the object, not its individual fields (fields belong to DataElement under the exchange)."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "application"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "QualityRequirement",
+      "domain": "Application",
+      "description": "A quality attribute requirement or non-functional constraint stated for a system: availability target, performance limit, security rule, maintainability or usability scenario, real-time constraint, failover. Value object owned by its system.",
+      "attributes": [
+        {
+          "name": "statement",
+          "type": "String",
+          "description": "The requirement or scenario as written ('The system shall support up to 10k data for both Inbound and Outbound files', 'haute disponibilité du système sur deux salles serveurs')",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        },
+        {
+          "name": "metric",
+          "type": "String",
+          "description": "Quantified target when printed (99.9 %, < 2 s, 350 Mbit, RPO 1 h)"
+        }
+      ],
+      "relations": [
+        {
+          "name": "attribute",
+          "target": {
+            "name": "QualityAttribute"
+          },
+          "cardinality": "OneToOne",
+          "description": "The quality attribute the requirement addresses"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Found under 'Quality Attributes', 'Non-Functional Requirements', 'Architectural Constraints', 'Design Assumptions and Constraints', 'Behavior and Performance', 'Safety, Security, and Privacy', 'Contraintes et objectifs', 'PCA/PRA'. One value object per stated requirement, attached to the system the section is about."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "application"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ArchitectureDecision",
+      "domain": "Application",
+      "description": "A design decision or general orientation recorded for a system, with its rationale: choice of a pattern (MVP, SOA, layered), of a hosting model, of open source, of REST APIs, of a storage offer. Value object owned by its system.",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "String",
+          "description": "Short title of the decision ('Why MVP pattern?', 'Open Source', 'API REST', 'Architecture multi-tenants')"
+        },
+        {
+          "name": "rationale",
+          "type": "String",
+          "description": "The justification given in the document, in its own words",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        }
+      ],
+      "relations": [],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Found under 'Orientations générales', 'Design Considerations', 'Solution Strategy', 'Patterns and Tactics', 'Rationale', 'Design Rationale', 'Justification des choix techniques'. One value object per decision; keep the rationale text as printed."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "application"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Component",
+      "domain": "Application",
+      "description": "A subsystem, module, service, database, data store, user interface, batch job or API that is part of a system, as described in its architecture document (Content Management Subsystem, Archival Subsystem, Session Authentication (SA-BS), Business Rules Engine, Data Store, Map (MAP-UI), composant 'access', 'batch-report', serveur de réplication MySQL). Value object owned by its system.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Component name as printed, with its short code when one is given (Orchestration (ORC-BS), Login-UI, ingest-external)"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "Responsibility of the component as described in the document",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        },
+        {
+          "name": "layer",
+          "type": "String",
+          "description": "Architectural layer or tier the component belongs to when printed (Presentation Layer, Service Layer, Data Access Layer, DFE, DSS, couche métier)"
+        }
+      ],
+      "relations": [
+        {
+          "name": "kind",
+          "target": {
+            "name": "ComponentKind"
+          },
+          "cardinality": "OneToOne",
+          "description": "Kind of component"
+        },
+        {
+          "name": "technologies",
+          "target": "Technology",
+          "cardinality": "ManyToMany",
+          "description": "Products, frameworks or standards the component is built on (MongoDB, Elasticsearch, Java, Oracle, IIS)"
+        },
+        {
+          "name": "hostedOn",
+          "target": "InfrastructureNode",
+          "cardinality": "ManyToMany",
+          "description": "The infrastructure nodes the component is deployed on, when the deployment view states it"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Components are the numbered sub-sections of 'System Architecture', 'System Components', 'Building Block View', 'Logical View', 'Element Catalog', 'Architecture applicative', 'Architecture détaillée' and the boxes of layer and deployment diagrams. One value object per component of the document's main system; sub-components (Drivers, Pipelines, Data Store under 'DFE Layers') are separate components with the parent named in layer."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "application"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ApplicationSystem",
+      "domain": "Application",
+      "description": "An application or information system of the IT landscape: a business application (MMIS, ACCESS, STARS, SADLS, GovInfo, R-ICMS, Vitam, LocAdoc, Co-op Evaluation System), a platform (ESB, data warehouse, GIS server), a portal or an external partner system the organisation exchanges with (Shibboleth, collection agency system, Medicare Beneficiary Database).",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Full name as printed (State Titling and Registration System, Federal Digital System, Regional Integrated Corridor Management System)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "acronym",
+          "type": "String",
+          "description": "Acronym or short name printed with the full name or used alone (STARS, FDsys, R-ICMS, MMIS, SSIS, MBDSS)"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "Purpose and scope of the system as described ('System Overview', 'Purpose of GovInfo', 'Positionnement', 'Enjeux')",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        },
+        {
+          "name": "version",
+          "type": "String",
+          "description": "Version or release of the system the document describes (Release 1C.2, 9.1.0, NextGen)"
+        },
+        {
+          "name": "userCount",
+          "type": "Integer",
+          "description": "Number of users when printed"
+        },
+        {
+          "name": "annualCost",
+          "type": "Double",
+          "description": "Annual cost or budget in the document's currency when printed ($70 million annually)"
+        }
+      ],
+      "relations": [
+        {
+          "name": "kind",
+          "target": {
+            "name": "ApplicationKind"
+          },
+          "cardinality": "OneToOne",
+          "description": "Kind of system"
+        },
+        {
+          "name": "status",
+          "target": {
+            "name": "LifecycleStatus"
+          },
+          "cardinality": "OneToOne",
+          "description": "Lifecycle status stated or implied by the document (legacy, in production, planned, to be replaced)"
+        },
+        {
+          "name": "hosting",
+          "target": {
+            "name": "HostingModel"
+          },
+          "cardinality": "OneToOne",
+          "description": "Hosting model when stated (on premise, SaaS, public cloud, mainframe)"
+        },
+        {
+          "name": "owner",
+          "target": "Organisation",
+          "cardinality": "ManyToOne",
+          "description": "The organisation that owns or operates the system ('maintained by DIT-T', 'Prepared by GovInfo Program', 'DSI')"
+        },
+        {
+          "name": "vendor",
+          "target": "Organisation",
+          "cardinality": "ManyToOne",
+          "description": "The vendor, integrator or contractor that built or supplies the system (Gainwell, DXC, Kapsch, Net-Assembly)"
+        },
+        {
+          "name": "hostedAt",
+          "target": "Site",
+          "cardinality": "ManyToOne",
+          "description": "The site or provider data center hosting the system, when stated"
+        },
+        {
+          "name": "capabilities",
+          "target": "BusinessCapability",
+          "cardinality": "ManyToMany",
+          "description": "Business capabilities or processes the system supports ('supports all Driver and Vehicle services', MITA process-to-system mapping)"
+        },
+        {
+          "name": "technologies",
+          "target": "Technology",
+          "cardinality": "ManyToMany",
+          "description": "Products, platforms and standards the system as a whole is built on (mainframe, .NET, PHP, MySQL, OAIS)"
+        },
+        {
+          "name": "masterOf",
+          "target": "DataObject",
+          "cardinality": "ManyToMany",
+          "description": "Data objects the system is the system of record for ('Records and monitors license plates', 'stores system information')"
+        },
+        {
+          "name": "components",
+          "target": "Component",
+          "cardinality": "OneToMany",
+          "description": "The subsystems, modules, services and data stores described for the system"
+        },
+        {
+          "name": "qualityRequirements",
+          "target": "QualityRequirement",
+          "cardinality": "OneToMany",
+          "description": "Quality attribute requirements and constraints stated for the system"
+        },
+        {
+          "name": "decisions",
+          "target": "ArchitectureDecision",
+          "cardinality": "OneToMany",
+          "description": "Design decisions and orientations recorded for the system"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.92"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.75"
+            },
+            {
+              "stereotypeProperty": "graphRagAnchor",
+              "valueAsString": "true"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "The main system is named in the title ('System Design Document for R-ICMS', 'VITAM - Architecture', 'System Architecture Description of LocAdoc') and in 'System Overview', 'Identification', 'Vue d'ensemble'. Other systems appear in 'System Context', 'External Interfaces', 'Interfaces externes du système', 'Significant Systems' lists ('State Automated Driver License System (SADLS) Issues Driver License Credentials'), 'Reference Documents', application maps ('cartographie applicative') and as the source or destination of interfaces. Use the full name as name and the short form in acronym; when only the acronym is printed, use it as the name. Extract external partner systems too, but not products (those are Technology) or organisations."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "application"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DataElement",
+      "domain": "Integration",
+      "description": "One field of a file layout or message of an exchange, as printed in interface control documents: field name, position, length, type, whether required, description. Value object owned by its exchange.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Field name as printed in the layout table ('Field Name', 'Data Element', 'Nom du champ')"
+        },
+        {
+          "name": "position",
+          "type": "Integer",
+          "description": "Start position in a fixed-width record when printed ('Position', 'Start')"
+        },
+        {
+          "name": "length",
+          "type": "Integer",
+          "description": "Field length when printed ('Length', 'Size')"
+        },
+        {
+          "name": "dataType",
+          "type": "String",
+          "description": "Type or format as printed (X(9), 9(5), Alphanumeric, Date CCYYMMDD, VARCHAR)"
+        },
+        {
+          "name": "required",
+          "type": "Boolean",
+          "description": "True when the field is marked required or mandatory ('R', 'Req', 'Obligatoire')"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "Meaning and allowed values of the field as printed"
+        }
+      ],
+      "relations": [],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "One value object per row of the 'Field Descriptions', 'Record Layout', 'Header Record' / 'Detail Record' / 'Trailer Record' and 'Data Definitions' tables. Attach the row to the exchange whose file or message the table describes (the table title names it: 'Placement Outbound File Field Descriptions')."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "integration"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DataExchange",
+      "domain": "Integration",
+      "description": "An interface or data flow between two systems: a file transfer over SFTP, a web service or REST API call, a message queue, an EDI transaction, a database extract, a batch feed. Described in interface control documents (ICD), interface specifications, 'System Interfaces' sections and 'flux' sections of French technical architecture documents.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Name of the interface, file or flow as printed (Placement Outbound File, Territory Beneficiary Query, SSIS/MMIS Eligibility Interface, flux d'ingest)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "Purpose of the exchange and the business rules that govern it",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        },
+        {
+          "name": "protocol",
+          "type": "String",
+          "description": "Transport protocol or channel as printed (SFTP, HTTPS/TLS, SOAP, MQ, VPN tunnel, Connect:Direct)"
+        },
+        {
+          "name": "format",
+          "type": "String",
+          "description": "Message or file format as printed (fixed-width, CSV, XML, JSON, X12 834, NCPDP D.0, SEDA)"
+        },
+        {
+          "name": "frequency",
+          "type": "String",
+          "description": "Frequency or timing as printed (daily, nightly, real-time, weekly on Monday, quotidien)"
+        },
+        {
+          "name": "volume",
+          "type": "String",
+          "description": "Volume or size limit as printed ('up to 10k records', '2 Go/jour')"
+        },
+        {
+          "name": "bidirectional",
+          "type": "Boolean",
+          "description": "True when the same interface carries data both ways; otherwise source and target give the direction"
+        }
+      ],
+      "relations": [
+        {
+          "name": "mechanism",
+          "target": {
+            "name": "ExchangeMechanism"
+          },
+          "cardinality": "OneToOne",
+          "description": "Integration mechanism used"
+        },
+        {
+          "name": "source",
+          "target": "ApplicationSystem",
+          "cardinality": "ManyToOne",
+          "description": "The system that sends the data ('Source', 'Outbound from', 'émetteur')"
+        },
+        {
+          "name": "target",
+          "target": "ApplicationSystem",
+          "cardinality": "ManyToOne",
+          "description": "The system that receives the data ('Destination', 'Inbound to', 'destinataire')"
+        },
+        {
+          "name": "dataObjects",
+          "target": "DataObject",
+          "cardinality": "ManyToMany",
+          "description": "The business data objects carried by the exchange"
+        },
+        {
+          "name": "dataElements",
+          "target": "DataElement",
+          "cardinality": "OneToMany",
+          "description": "The fields of the file or message layout, when the document prints them"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagAnchor",
+              "valueAsString": "true"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Exchanges appear in 'System Interfaces', 'Process/Data Flows', 'Data Exchanges' tables (Table 6), 'Web Service Interfaces', 'File Transfer Interfaces', 'Interfaces externes', 'Flux métier' / 'Flux exploitation' / 'Flux techniques' tables (with columns source, destination, protocole, port, fréquence, volumétrie), and in text ('Approximately 50 federal, state, and local applications connect to DMV systems'). One entity per named file, service or flow; when a document lists an interface between two systems without a name, name it '<source> to <target>'. Point source and target at ApplicationSystem entities, creating the partner system when needed."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "integration"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Project",
+      "domain": "Governance",
+      "description": "A project, programme or planned initiative that changes the landscape: a modernisation programme (DMV Application System Modernization, NC MAX), a replacement (ERP replacement, 'remplacement du logiciel de gestion administrative'), an infrastructure renewal, a target-state initiative of an EA plan or master plan (schéma directeur).",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Name of the project or programme as printed (DMV Application System Modernization (DASM), Renouvellement des infrastructures serveurs)",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "description": "Objective and scope of the project as described",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        },
+        {
+          "name": "startDate",
+          "type": "Date",
+          "description": "Start date or year when printed"
+        },
+        {
+          "name": "endDate",
+          "type": "Date",
+          "description": "Planned or actual end date or year when printed (2025 for a 2021-2025 plan)"
+        },
+        {
+          "name": "budget",
+          "type": "Double",
+          "description": "Budget or cost in the document's currency when printed ($42 million)"
+        }
+      ],
+      "relations": [
+        {
+          "name": "status",
+          "target": {
+            "name": "ProjectStatus"
+          },
+          "cardinality": "OneToOne",
+          "description": "Status stated or implied by the document"
+        },
+        {
+          "name": "sponsor",
+          "target": "Organisation",
+          "cardinality": "ManyToOne",
+          "description": "The organisation sponsoring or running the project"
+        },
+        {
+          "name": "affectedSystems",
+          "target": "ApplicationSystem",
+          "cardinality": "ManyToMany",
+          "description": "Systems the project replaces, upgrades, migrates or introduces"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagMatch",
+              "valueAsString": "fuzzy"
+            },
+            {
+              "stereotypeProperty": "graphRagFuzzyThreshold",
+              "valueAsString": "0.92"
+            },
+            {
+              "stereotypeProperty": "graphRagReviewBand",
+              "valueAsString": "0.75"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Projects appear in 'Future Plans', 'Future State', 'Transition Plan', 'Roadmap', 'Projets', 'Orientations 2021-2025', audit findings ('46 projects ... $42 million') and modernisation sections. Extract named projects and programmes, not generic recommendations."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "governance"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DocumentRevision",
+      "domain": "Governance",
+      "description": "One row of a document's revision history: version, date, author and description of the change. Value object owned by its document.",
+      "attributes": [
+        {
+          "name": "version",
+          "type": "String",
+          "description": "Version label as printed (1.0, 2.01, v1.2, 0.8, 225-15.3)"
+        },
+        {
+          "name": "date",
+          "type": "Date",
+          "description": "Date of the revision"
+        },
+        {
+          "name": "author",
+          "type": "String",
+          "description": "Author or organisation of the revision as printed in the 'Author' column"
+        },
+        {
+          "name": "changes",
+          "type": "String",
+          "description": "Description of the change as printed ('Updated Network Diagram', 'Initial draft', 'Revision based on the comments of ...')"
+        }
+      ],
+      "relations": [],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "One value object per row of the 'Revision History', 'Document History', 'Change Sheet', 'Publication Version Control' or 'Historique des versions' table, usually on the first pages after the cover."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "governance"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ArchitectureDocument",
+      "domain": "Governance",
+      "description": "The architecture document itself: an enterprise architecture blueprint, a technical architecture document (dossier d'architecture technique, DAT), a system design document (SDD), a software architecture document (SAD), an interface control document (ICD), an IT master plan (schéma directeur du SI, SDSI), a self-assessment or an audit report. Its revisions are value objects.",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "String",
+          "description": "Title as printed on the cover, without the version ('System Design Document for R-ICMS', 'VITAM - Architecture', 'Schéma directeur du système d'information')",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "reference",
+          "type": "String",
+          "description": "Document number or identifier when printed (MMA.DDX.1502.04.5.1211, W103, Deliverable 2.1, EA225)"
+        },
+        {
+          "name": "version",
+          "type": "String",
+          "description": "Version of this edition as printed on the cover ('Version 1.0', 'v7', '9.1.0', 'Revision February / 2026')"
+        },
+        {
+          "name": "publicationDate",
+          "type": "Date",
+          "description": "Date printed on the cover or approval line ('Approval date: 10/30/2018', 'juin 05, 2026', 'July 2023')"
+        },
+        {
+          "name": "purpose",
+          "type": "String",
+          "description": "The 'Purpose', 'Objectif de ce document' or 'Executive Summary' paragraph",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        },
+        {
+          "name": "pageCount",
+          "type": "Integer",
+          "description": "Number of pages when the document states it ('Page 1 of 38')"
+        },
+        {
+          "name": "confidentiality",
+          "type": "String",
+          "description": "Classification or licence printed on the document ('Confidential and Proprietary', 'strictly confidential', 'CC BY 4.0', 'Public')"
+        }
+      ],
+      "relations": [
+        {
+          "name": "documentType",
+          "target": {
+            "name": "DocumentType"
+          },
+          "cardinality": "OneToOne",
+          "description": "Kind of architecture document"
+        },
+        {
+          "name": "language",
+          "target": {
+            "name": "DocumentLanguage"
+          },
+          "cardinality": "OneToOne",
+          "description": "Language the document is written in"
+        },
+        {
+          "name": "issuer",
+          "target": "Organisation",
+          "cardinality": "ManyToOne",
+          "description": "The organisation that issues the document ('Prepared by', 'Published by', 'Edition :')"
+        },
+        {
+          "name": "authors",
+          "target": "Person",
+          "cardinality": "ManyToMany",
+          "description": "People named as authors, editors or contributors"
+        },
+        {
+          "name": "approvers",
+          "target": "Person",
+          "cardinality": "ManyToMany",
+          "description": "People named as reviewers or approvers in the document control or approval table"
+        },
+        {
+          "name": "describedSystems",
+          "target": "ApplicationSystem",
+          "cardinality": "ManyToMany",
+          "description": "The system or systems the document is about (its main subject, not every system it mentions)"
+        },
+        {
+          "name": "revisions",
+          "target": "DocumentRevision",
+          "cardinality": "OneToMany",
+          "description": "The rows of the revision history"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagAnchor",
+              "valueAsString": "true"
+            },
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Exactly one entity per PDF: the document being read. Title, version, date, issuer and reference are on the cover page and in the page header or footer; the revision history is on the pages that follow. Keep the version out of the title so that successive editions of the same document merge (System Design Document v5 and v7 are one document with two revisions). Documents referenced in 'Reference Documents' or 'Documents de référence' are NOT extracted as ArchitectureDocument."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "governance"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ArchitecturePrinciple",
+      "domain": "Governance",
+      "description": "A guiding principle, guideline or standard rule the organisation applies to its architecture: 'Simpler is better', 'Commercial products should be used where possible', 'Industry based standards should be used', 'Open Source', 'API REST', an EA standard requirement agencies must comply with.",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "description": "Short name or first words of the principle as printed",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagIdentity",
+              "stereotypePropertyInstances": [
+                {
+                  "stereotypeProperty": "graphRagNormalise",
+                  "valueAsString": "casefold"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "statement",
+          "type": "String",
+          "description": "The principle and its rationale as written in the document",
+          "stereotypeInstances": [
+            {
+              "modelStereotype": "GraphRagEmbed",
+              "stereotypePropertyInstances": []
+            }
+          ]
+        }
+      ],
+      "relations": [
+        {
+          "name": "sourceDocument",
+          "target": "ArchitectureDocument",
+          "cardinality": "ManyToOne",
+          "description": "The document that states the principle"
+        }
+      ],
+      "stereotypeInstances": [
+        {
+          "modelStereotype": "GraphRagEntity",
+          "stereotypePropertyInstances": [
+            {
+              "stereotypeProperty": "graphRagExtractionHints",
+              "valueAsString": "Principles are bullet lists under 'Guidelines', 'Guiding Principles', 'Goals', 'Principes d'architecture', 'Orientations générales' or 'Architecture Principles' in EA blueprints, standards and technical architecture documents. One entity per principle; skip generic prose."
+            },
+            {
+              "stereotypeProperty": "graphRagGroup",
+              "valueAsString": "governance"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "enumerations": [
+    {
+      "name": "OrganisationKind",
+      "domain": "Governance",
+      "description": "Role an organisation plays in the architecture documents",
+      "values": [
+        {
+          "value": "GOVERNMENT_AGENCY",
+          "description": "A federal, state or local public body (agency, department, ministère, collectivité)"
+        },
+        {
+          "value": "IT_DEPARTMENT",
+          "description": "The IT department or directorate of an organisation (OIT, DIT-T, DSI, Programs Strategy and Technology)"
+        },
+        {
+          "value": "BUSINESS_UNIT",
+          "description": "A business division, office or programme inside an organisation (Division of Motor Vehicles, GovInfo Program, pôle)"
+        },
+        {
+          "value": "VENDOR",
+          "description": "A software or hardware vendor, integrator or contractor (Kapsch, SwRI, Gainwell, DXC, Net-Assembly)"
+        },
+        {
+          "value": "HOSTING_PROVIDER",
+          "description": "A hosting or cloud provider (Digital Ocean, AWS, Azure)"
+        },
+        {
+          "value": "STANDARDS_BODY",
+          "description": "A standards organisation (NIST, W3C, The Open Group, CMS as a rule maker)"
+        },
+        {
+          "value": "CONSORTIUM",
+          "description": "A research or industry consortium (ITEA 2 CREATE consortium)"
+        },
+        {
+          "value": "ACADEMIC",
+          "description": "A university or school (RIT, université)"
+        },
+        {
+          "value": "OTHER",
+          "description": "Any other kind of organisation"
+        }
+      ]
+    },
+    {
+      "name": "TechnologyCategory",
+      "domain": "Technology",
+      "description": "Category of a technology product, protocol or standard",
+      "values": [
+        {
+          "value": "OPERATING_SYSTEM",
+          "description": "Windows Server, Solaris, Linux, Ubuntu, iOS"
+        },
+        {
+          "value": "DATABASE",
+          "description": "Oracle, MySQL, SQL Server, MongoDB, SQLite, DynamoDB"
+        },
+        {
+          "value": "MIDDLEWARE",
+          "description": "Application server, ESB, message broker, search engine, web server (WebSphere, IIS, Elasticsearch, Kafka)"
+        },
+        {
+          "value": "LANGUAGE_FRAMEWORK",
+          "description": "Programming language or framework (Java, J2EE, .NET, PHP, Android)"
+        },
+        {
+          "value": "VIRTUALISATION",
+          "description": "Hypervisor or container platform (VMware vSphere, Docker, Kubernetes)"
+        },
+        {
+          "value": "NETWORK",
+          "description": "Switch, router, wireless, load balancer, VPN (Cisco Nexus, Aruba, Global Protect)"
+        },
+        {
+          "value": "SECURITY",
+          "description": "Firewall, endpoint protection, SIEM, identity and access (Palo Alto, CrowdStrike, PingID, Shibboleth, Active Directory)"
+        },
+        {
+          "value": "STORAGE_BACKUP",
+          "description": "Storage array, object storage, backup (Nimble, Swift, S3, tape library, Rubrik)"
+        },
+        {
+          "value": "CLOUD_SERVICE",
+          "description": "A managed cloud service (AWS Cognito, Azure, Microsoft 365)"
+        },
+        {
+          "value": "END_USER_DEVICE",
+          "description": "Desktop, laptop, tablet, phone, printer models (Dell Optiplex, Panasonic Toughbook, Canon MFP)"
+        },
+        {
+          "value": "MONITORING_OPERATIONS",
+          "description": "Monitoring, logging, deployment and configuration tools (SumoLogic, SCCM, Ansible, FrameFlow)"
+        },
+        {
+          "value": "BUSINESS_SOFTWARE",
+          "description": "Packaged business software or productivity suite (SAP, Salesforce, Microsoft Exchange, Teams, Power BI, ArcGIS)"
+        },
+        {
+          "value": "STANDARD_PROTOCOL",
+          "description": "An open standard, data format or protocol (OAIS, HIPAA 5010, X12, NCPDP, SEDA, REST, SFTP, TLS, SAML)"
+        },
+        {
+          "value": "OTHER",
+          "description": "Any other category"
+        }
+      ]
+    },
+    {
+      "name": "TechnologyStatus",
+      "domain": "Technology",
+      "description": "Lifecycle status of a technology in the organisation's standards",
+      "values": [
+        {
+          "value": "STANDARD",
+          "description": "Approved standard for new solutions (standard, cible, approved)"
+        },
+        {
+          "value": "EMERGING",
+          "description": "Under evaluation or pilot (emerging, en évaluation)"
+        },
+        {
+          "value": "TOLERATED",
+          "description": "Allowed for existing solutions only (tolerated, contained, maintenu)"
+        },
+        {
+          "value": "RETIRING",
+          "description": "To be phased out (sunset, retiring, obsolète, à décommissionner)"
+        },
+        {
+          "value": "RETIRED",
+          "description": "No longer in use (retired, décommissionné)"
+        }
+      ]
+    },
+    {
+      "name": "SiteKind",
+      "domain": "Infrastructure",
+      "description": "Kind of physical or cloud location",
+      "values": [
+        {
+          "value": "DATA_CENTER",
+          "description": "A data center (centre de données)"
+        },
+        {
+          "value": "SERVER_ROOM",
+          "description": "A server room inside a building (salle serveurs, salle informatique)"
+        },
+        {
+          "value": "OFFICE_SITE",
+          "description": "An office, campus, hospital or agency site (site, établissement)"
+        },
+        {
+          "value": "CLOUD_REGION",
+          "description": "A cloud provider region or availability zone"
+        },
+        {
+          "value": "PROVIDER_DATA_CENTER",
+          "description": "A hosting provider's data centers (data centers européens de Digital Ocean)"
+        }
+      ]
+    },
+    {
+      "name": "NodeKind",
+      "domain": "Infrastructure",
+      "description": "Kind of infrastructure node",
+      "values": [
+        {
+          "value": "PHYSICAL_SERVER",
+          "description": "A physical server or blade (serveur physique)"
+        },
+        {
+          "value": "VIRTUAL_MACHINE",
+          "description": "A virtual machine (machine virtuelle, VM)"
+        },
+        {
+          "value": "CONTAINER_HOST",
+          "description": "A container host or cluster node"
+        },
+        {
+          "value": "MAINFRAME",
+          "description": "A mainframe"
+        },
+        {
+          "value": "CLOUD_INSTANCE",
+          "description": "A cloud compute instance or managed service instance"
+        },
+        {
+          "value": "NETWORK_DEVICE",
+          "description": "Switch, router, firewall, wireless access point, link (coeur de réseau, faisceau hertzien)"
+        },
+        {
+          "value": "STORAGE_ARRAY",
+          "description": "Storage array, NAS, SAN, tape library (baie de stockage)"
+        },
+        {
+          "value": "APPLIANCE",
+          "description": "Appliance or facility equipment (UPS, HVAC, backup appliance, PBX)"
+        },
+        {
+          "value": "END_USER_DEVICE",
+          "description": "Workstation, laptop, tablet, phone, printer (poste de travail)"
+        }
+      ]
+    },
+    {
+      "name": "EnvironmentKind",
+      "domain": "Infrastructure",
+      "description": "Environment an infrastructure node belongs to",
+      "values": [
+        {
+          "value": "PRODUCTION",
+          "description": "Production (production, prod)"
+        },
+        {
+          "value": "PREPRODUCTION",
+          "description": "Pre-production, staging, acceptance (préproduction, recette)"
+        },
+        {
+          "value": "TEST",
+          "description": "Test or integration (test, intégration)"
+        },
+        {
+          "value": "DEVELOPMENT",
+          "description": "Development (développement)"
+        },
+        {
+          "value": "DISASTER_RECOVERY",
+          "description": "Disaster recovery or backup site (PRA, secours)"
+        },
+        {
+          "value": "TRAINING",
+          "description": "Training or demonstration (formation)"
+        }
+      ]
+    },
+    {
+      "name": "QualityAttribute",
+      "domain": "Application",
+      "description": "Quality attribute addressed by a requirement or constraint",
+      "values": [
+        {
+          "value": "AVAILABILITY",
+          "description": "Availability, high availability, failover, continuity (disponibilité, PCA/PRA)"
+        },
+        {
+          "value": "PERFORMANCE",
+          "description": "Response time, throughput, real-time constraints (performance, temps de réponse)"
+        },
+        {
+          "value": "SCALABILITY",
+          "description": "Capacity growth, volumes, multi-tenancy (scalabilité, dimensionnement)"
+        },
+        {
+          "value": "SECURITY",
+          "description": "Confidentiality, integrity, authentication, privacy (sécurité, confidentialité)"
+        },
+        {
+          "value": "RELIABILITY",
+          "description": "Reliability, data integrity, persistence (fiabilité)"
+        },
+        {
+          "value": "MAINTAINABILITY",
+          "description": "Maintainability, modularity, extensibility (maintenabilité, évolutivité)"
+        },
+        {
+          "value": "USABILITY",
+          "description": "Usability, accessibility (ergonomie, accessibilité)"
+        },
+        {
+          "value": "TESTABILITY",
+          "description": "Testability"
+        },
+        {
+          "value": "INTEROPERABILITY",
+          "description": "Interoperability, compatibility, standards compliance (interopérabilité)"
+        },
+        {
+          "value": "PORTABILITY",
+          "description": "Portability, cloud or platform independence (portabilité)"
+        },
+        {
+          "value": "COMPLIANCE",
+          "description": "Legal or regulatory compliance (HIPAA, RGPD, PCI, archival law)"
+        }
+      ]
+    },
+    {
+      "name": "ComponentKind",
+      "domain": "Application",
+      "description": "Kind of component inside a system",
+      "values": [
+        {
+          "value": "SUBSYSTEM",
+          "description": "A major subsystem (Content Management Subsystem, DFE, DSS)"
+        },
+        {
+          "value": "MODULE",
+          "description": "A functional module or package"
+        },
+        {
+          "value": "SERVICE",
+          "description": "A business or technical service, microservice or API (SA-BS, ingest-external, service registry)"
+        },
+        {
+          "value": "USER_INTERFACE",
+          "description": "A user interface, screen or web application (Login-UI, MAP-UI, IHM)"
+        },
+        {
+          "value": "DATABASE",
+          "description": "A database instance or schema (base MySQL, Oracle SQL database, MongoDB)"
+        },
+        {
+          "value": "DATA_STORE",
+          "description": "A non-database store: file share, object storage, cache, index (Data Store, offre S3, Elasticsearch index)"
+        },
+        {
+          "value": "BATCH_JOB",
+          "description": "A scheduled batch process or pipeline (batch-report, Pipelines, extraction nocturne)"
+        },
+        {
+          "value": "CONNECTOR",
+          "description": "A driver, adapter or connector to an external system (Drivers, EDI translator)"
+        },
+        {
+          "value": "LIBRARY",
+          "description": "A shared library or framework component (bibliothèque structurante)"
+        },
+        {
+          "value": "INFRASTRUCTURE_SERVICE",
+          "description": "A technical service such as logging, monitoring, deployment, authentication (chaîne de logs, moteur de déploiement)"
+        }
+      ]
+    },
+    {
+      "name": "ApplicationKind",
+      "domain": "Application",
+      "description": "Kind of application system",
+      "values": [
+        {
+          "value": "BUSINESS_APPLICATION",
+          "description": "An application supporting business processes (MMIS, STARS, dossier patient, caisse)"
+        },
+        {
+          "value": "PORTAL",
+          "description": "A public or internal web portal (GovInfo, Vermont Health Connect)"
+        },
+        {
+          "value": "MOBILE_APPLICATION",
+          "description": "A mobile app (LocAdoc)"
+        },
+        {
+          "value": "INTEGRATION_PLATFORM",
+          "description": "ESB, API gateway, EDI translator, file transfer hub"
+        },
+        {
+          "value": "DATA_PLATFORM",
+          "description": "Data warehouse, data lake, reporting or BI platform, health information exchange"
+        },
+        {
+          "value": "TECHNICAL_PLATFORM",
+          "description": "A shared technical platform: archiving system, GIS server, identity provider, document management"
+        },
+        {
+          "value": "EXTERNAL_SYSTEM",
+          "description": "A partner's or another organisation's system the landscape exchanges with (Medicare Beneficiary Database, collection agency system, Shibboleth)"
+        },
+        {
+          "value": "INFRASTRUCTURE_SYSTEM",
+          "description": "Messaging, telephony, backup, monitoring systems treated as applications (Exchange, PBX, RightFax)"
+        }
+      ]
+    },
+    {
+      "name": "LifecycleStatus",
+      "domain": "Application",
+      "description": "Lifecycle status of an application system",
+      "values": [
+        {
+          "value": "PLANNED",
+          "description": "Planned or in procurement, not yet built (cible, à venir)"
+        },
+        {
+          "value": "IN_DEVELOPMENT",
+          "description": "Under development or in a release cycle (en cours de développement)"
+        },
+        {
+          "value": "IN_PRODUCTION",
+          "description": "In production, current (en production)"
+        },
+        {
+          "value": "LEGACY",
+          "description": "In production but outdated or to be replaced (legacy, mainframe, obsolète)"
+        },
+        {
+          "value": "DECOMMISSIONING",
+          "description": "Being replaced or phased out (en cours de décommissionnement, transition)"
+        },
+        {
+          "value": "RETIRED",
+          "description": "No longer in use (décommissionné, replaced by)"
+        }
+      ]
+    },
+    {
+      "name": "HostingModel",
+      "domain": "Application",
+      "description": "Where and how an application system is hosted",
+      "values": [
+        {
+          "value": "ON_PREMISE",
+          "description": "In the organisation's own data center or server rooms (sur site, hébergement interne)"
+        },
+        {
+          "value": "MAINFRAME",
+          "description": "On a mainframe"
+        },
+        {
+          "value": "PRIVATE_CLOUD",
+          "description": "In a private or government cloud"
+        },
+        {
+          "value": "PUBLIC_CLOUD",
+          "description": "On a public cloud provider's infrastructure (AWS, Azure, Digital Ocean)"
+        },
+        {
+          "value": "SAAS",
+          "description": "Delivered as a service by the vendor (SaaS, multi-instance hébergé par l'éditeur)"
+        },
+        {
+          "value": "HYBRID",
+          "description": "A mix of on-premise and cloud"
+        }
+      ]
+    },
+    {
+      "name": "ExchangeMechanism",
+      "domain": "Integration",
+      "description": "Integration mechanism of a data exchange",
+      "values": [
+        {
+          "value": "FILE_TRANSFER",
+          "description": "Files exchanged over SFTP, FTP, Connect:Direct or a shared folder (échange de fichiers)"
+        },
+        {
+          "value": "WEB_SERVICE",
+          "description": "SOAP or other RPC-style web service"
+        },
+        {
+          "value": "REST_API",
+          "description": "REST or HTTP API call (API REST)"
+        },
+        {
+          "value": "MESSAGE_QUEUE",
+          "description": "Asynchronous messaging (MQ, Kafka, JMS, publish/subscribe)"
+        },
+        {
+          "value": "DATABASE_LINK",
+          "description": "Direct database access, replication or database link (réplication, vue)"
+        },
+        {
+          "value": "EDI",
+          "description": "EDI transaction (X12 834, 837, 271, NCPDP)"
+        },
+        {
+          "value": "BATCH_EXTRACT",
+          "description": "Scheduled extract or ETL load (extraction, chargement)"
+        },
+        {
+          "value": "MANUAL",
+          "description": "Manual re-keying, e-mail or paper exchange"
+        },
+        {
+          "value": "OTHER",
+          "description": "Any other or unstated mechanism"
+        }
+      ]
+    },
+    {
+      "name": "ProjectStatus",
+      "domain": "Governance",
+      "description": "Status of a project or initiative",
+      "values": [
+        {
+          "value": "PLANNED",
+          "description": "Planned, proposed or in a roadmap (prévu, cible)"
+        },
+        {
+          "value": "IN_PROGRESS",
+          "description": "Started, under way (en cours)"
+        },
+        {
+          "value": "COMPLETED",
+          "description": "Delivered, achieved (abouti, réalisé)"
+        },
+        {
+          "value": "ON_HOLD",
+          "description": "Paused or delayed (suspendu, retardé)"
+        },
+        {
+          "value": "CANCELLED",
+          "description": "Cancelled (abandonné)"
+        }
+      ]
+    },
+    {
+      "name": "DocumentType",
+      "domain": "Governance",
+      "description": "Kind of architecture document",
+      "values": [
+        {
+          "value": "EA_BLUEPRINT",
+          "description": "Enterprise architecture blueprint, EA plan with current and target state (Enterprise Architecture Blueprint, Transformation Plan)"
+        },
+        {
+          "value": "TECHNICAL_ARCHITECTURE",
+          "description": "Technical architecture document of a system (Dossier d'architecture technique, DAT, Architecture)"
+        },
+        {
+          "value": "SYSTEM_DESIGN",
+          "description": "System design document or description (SDD, System Architecture Design Document)"
+        },
+        {
+          "value": "SOFTWARE_ARCHITECTURE",
+          "description": "Software architecture document (SAD, Software Architecture Documentation)"
+        },
+        {
+          "value": "INTERFACE_CONTROL",
+          "description": "Interface control document or interface specification (ICD, Interface Specification)"
+        },
+        {
+          "value": "MASTER_PLAN",
+          "description": "IT strategic or master plan (Schéma directeur du SI, SDSI, IT Strategic Plan)"
+        },
+        {
+          "value": "STANDARDS_CATALOG",
+          "description": "Catalog of technology standards (Enterprise Architecture Standards, Infrastructure, Hardware & Software Standards)"
+        },
+        {
+          "value": "ASSESSMENT",
+          "description": "Maturity or capability self-assessment (MITA State Self-Assessment)"
+        },
+        {
+          "value": "AUDIT_REPORT",
+          "description": "Audit or evaluation report on systems (Information Systems Audit Report)"
+        }
+      ]
+    },
+    {
+      "name": "DocumentLanguage",
+      "domain": "Governance",
+      "description": "Language of the document",
+      "values": [
+        {
+          "value": "EN",
+          "description": "English"
+        },
+        {
+          "value": "FR",
+          "description": "French (français)"
+        },
+        {
+          "value": "OTHER",
+          "description": "Any other language"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="DiagramColorizer" version="4">
+  <OBJECT>
+    <ID name="DiagramColorizer" mc="Infrastructure.ModuleComponent" uid="a6d596f2-440b-4f56-883a-dbe61bf3d804"/>
+    <ATTRIBUTES>
+      <ATT name="LicenseKey">0</ATT>
+      <ATT name="MajVersion">5</ATT>
+      <ATT name="MinVersion">4</ATT>
+      <ATT name="MinMinVersion"><![CDATA[1]]></ATT>
+      <ATT name="MinBinVersionCompatibility"></ATT>
+      <ATT name="JavaClassName"><![CDATA[fr.acceliance.modelio.diagramcolorizer.impl.DiagramColorizerModule]]></ATT>
+      <ATT name="Name"><![CDATA[DiagramColorizer]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedProfile">
+        <COMPID name="DiagramColorizerProfile" mc="Infrastructure.Profile" uid="f82ec883-4412-4eab-85cd-32fe69654131"/>
+      </COMP>
+      <COMP relation="ModuleParameter">
+        <OBJECT>
+          <ID name="PngTransparentBackground" mc="Infrastructure.ModuleParameter" uid="b71a8a3f-2c4e-4d7a-9a1b-7f3d8c4e5f01"/>
+          <ATTRIBUTES>
+            <ATT name="GroupName"></ATT>
+            <ATT name="Type">TYPE_PARAM_BOOLEAN</ATT>
+            <ATT name="IsUserRead">true</ATT>
+            <ATT name="IsUserWrite">true</ATT>
+            <ATT name="IsApiRead">true</ATT>
+            <ATT name="IsApiWrite">true</ATT>
+            <ATT name="DefaultValue"><![CDATA[false]]></ATT>
+            <ATT name="Name"><![CDATA[PngTransparentBackground]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="DrawioGenerateTooltips" mc="Infrastructure.ModuleParameter" uid="c92b7d4e-3f5a-4e8c-bd6f-1a2b3c4d5e6f"/>
+          <ATTRIBUTES>
+            <ATT name="GroupName"></ATT>
+            <ATT name="Type">TYPE_PARAM_BOOLEAN</ATT>
+            <ATT name="IsUserRead">true</ATT>
+            <ATT name="IsUserWrite">true</ATT>
+            <ATT name="IsApiRead">true</ATT>
+            <ATT name="IsApiWrite">true</ATT>
+            <ATT name="DefaultValue"><![CDATA[true]]></ATT>
+            <ATT name="Name"><![CDATA[DrawioGenerateTooltips]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="AutoLayoutHGap" mc="Infrastructure.ModuleParameter" uid="d1e2f3a4-5b6c-4d7e-8f90-1a2b3c4d5e60"/>
+          <ATTRIBUTES>
+            <ATT name="GroupName"></ATT>
+            <ATT name="Type">TYPE_PARAM_INTEGER</ATT>
+            <ATT name="IsUserRead">true</ATT>
+            <ATT name="IsUserWrite">true</ATT>
+            <ATT name="IsApiRead">true</ATT>
+            <ATT name="IsApiWrite">true</ATT>
+            <ATT name="DefaultValue"><![CDATA[60]]></ATT>
+            <ATT name="Name"><![CDATA[AutoLayoutHGap]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="AutoLayoutVGap" mc="Infrastructure.ModuleParameter" uid="e2f3a4b5-6c7d-4e8f-9012-2b3c4d5e6f71"/>
+          <ATTRIBUTES>
+            <ATT name="GroupName"></ATT>
+            <ATT name="Type">TYPE_PARAM_INTEGER</ATT>
+            <ATT name="IsUserRead">true</ATT>
+            <ATT name="IsUserWrite">true</ATT>
+            <ATT name="IsApiRead">true</ATT>
+            <ATT name="IsApiWrite">true</ATT>
+            <ATT name="DefaultValue"><![CDATA[80]]></ATT>
+            <ATT name="Name"><![CDATA[AutoLayoutVGap]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

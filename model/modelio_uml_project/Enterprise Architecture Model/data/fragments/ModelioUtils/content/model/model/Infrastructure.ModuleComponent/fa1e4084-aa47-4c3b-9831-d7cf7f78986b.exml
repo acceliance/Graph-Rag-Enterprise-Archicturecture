@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="ModelioUtils" version="4">
+  <OBJECT>
+    <ID name="ModelioUtils" mc="Infrastructure.ModuleComponent" uid="fa1e4084-aa47-4c3b-9831-d7cf7f78986b"/>
+    <ATTRIBUTES>
+      <ATT name="LicenseKey">0</ATT>
+      <ATT name="MajVersion">5</ATT>
+      <ATT name="MinVersion">4</ATT>
+      <ATT name="MinMinVersion"><![CDATA[1]]></ATT>
+      <ATT name="MinBinVersionCompatibility"></ATT>
+      <ATT name="JavaClassName"><![CDATA[fr.acceliance.modelio.utils.impl.ModelioUtilsModule]]></ATT>
+      <ATT name="Name"><![CDATA[ModelioUtils]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedPropertyType">
+        <COMPID name="ForceLogExceptionStack" mc="Infrastructure.EnumeratedPropertyType" uid="a3394a83-050e-4b9d-b0d5-d8764b233b05"/>
+      </COMP>
+      <COMP relation="ModuleParameter">
+        <OBJECT>
+          <ID name="ForceLogExceptionStack" mc="Infrastructure.ModuleParameter" uid="e8705db3-de16-43a5-8f8d-623eb3705a86"/>
+          <ATTRIBUTES>
+            <ATT name="GroupName"></ATT>
+            <ATT name="Type">TYPE_PARAM_ENUM</ATT>
+            <ATT name="IsUserRead">true</ATT>
+            <ATT name="IsUserWrite">true</ATT>
+            <ATT name="IsApiRead">true</ATT>
+            <ATT name="IsApiWrite">true</ATT>
+            <ATT name="DefaultValue"><![CDATA[LeaveAsIs]]></ATT>
+            <ATT name="Name"><![CDATA[ForceLogExceptionStack]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="EnumType">
+              <ID name="ForceLogExceptionStack" mc="Infrastructure.EnumeratedPropertyType" uid="a3394a83-050e-4b9d-b0d5-d8764b233b05"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="RedirectLogToMessageNofifier" mc="Infrastructure.ModuleParameter" uid="e8705db3-de16-43a5-8f8d-623eb2405a86"/>
+          <ATTRIBUTES>
+            <ATT name="GroupName"></ATT>
+            <ATT name="Type">TYPE_PARAM_BOOLEAN</ATT>
+            <ATT name="IsUserRead">true</ATT>
+            <ATT name="IsUserWrite">true</ATT>
+            <ATT name="IsApiRead">true</ATT>
+            <ATT name="IsApiWrite">true</ATT>
+            <ATT name="DefaultValue"><![CDATA[false]]></ATT>
+            <ATT name="Name"><![CDATA[RedirectLogToMessageNofifier]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="EnableModelExport" mc="Infrastructure.ModuleParameter" uid="84602A88-0ED2-423F-84EE-3C417039B78D"/>
+          <ATTRIBUTES>
+            <ATT name="GroupName"></ATT>
+            <ATT name="Type">TYPE_PARAM_BOOLEAN</ATT>
+            <ATT name="IsUserRead">true</ATT>
+            <ATT name="IsUserWrite">true</ATT>
+            <ATT name="IsApiRead">true</ATT>
+            <ATT name="IsApiWrite">true</ATT>
+            <ATT name="DefaultValue"><![CDATA[false]]></ATT>
+            <ATT name="Name"><![CDATA[EnableModelExport]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

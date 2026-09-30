@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Enterprise Architecture Model" version="4">
+  <OBJECT>
+    <ID name="Enterprise Architecture Model" mc="Infrastructure.DiagramSet" uid="95b09565-e798-4bad-80ca-c556caf2ffee"/>
+    <PID name="Enterprise Architecture Model" mc="Standard.Project" uid="ff5476b0-18b3-4618-9ce1-98886ffdc34a"/>
+    <ATTRIBUTES>
+      <ATT name="Name"><![CDATA[Enterprise Architecture Model]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES></DEPENDENCIES>
+  </OBJECT>
+</EXT>

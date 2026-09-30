@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="AccelianceDiagram" version="4">
+  <OBJECT>
+    <ID name="AccelianceDiagram" mc="Infrastructure.Stereotype" uid="3FEB7109-7873-479C-953F-624D272BC997"/>
+    <PID name="DiagramColorizerProfile" mc="Infrastructure.Profile" uid="f82ec883-4412-4eab-85cd-32fe69654131"/>
+    <ATTRIBUTES>
+      <ATT name="Image"><![CDATA[res/icons/logo-acc-seul-16.png]]></ATT>
+      <ATT name="Icon"></ATT>
+      <ATT name="IsHidden">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="LabelKey"><![CDATA[AccelianceDiagram]]></ATT>
+      <ATT name="BaseClassName"><![CDATA[ClassDiagram]]></ATT>
+      <ATT name="Name"><![CDATA[AccelianceDiagram]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES></DEPENDENCIES>
+  </OBJECT>
+</EXT>
