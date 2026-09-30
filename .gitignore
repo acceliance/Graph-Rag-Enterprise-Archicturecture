@@ -1,0 +1,10 @@
+# Secrets and runtime state — never committed
+.env
+data/
+backups/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

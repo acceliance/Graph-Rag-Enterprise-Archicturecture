@@ -1,0 +1,457 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/acceliance/Graph-Rag-Deploy/main/schemas/schema_uml_model.json",
+  "$defs": {
+    "ModelAttribute": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "title": "String",
+          "description": "Human-readable explanation of what this field stores"
+        },
+        "name": {
+          "type": "string",
+          "title": "String",
+          "description": "Field name in camelCase (e.g., 'firstName', 'birthDate', 'totalAmount')"
+        },
+        "stereotypeInstances": {
+          "description": "Stereotypes applied to this artefact, each with its tagged-value instances",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelStereotypeInst"
+          },
+          "title": "List"
+        },
+        "type": {
+          "$ref": "#/$defs/ModelType",
+          "description": "Primitive type — see ModelType enum for allowed values and guidance"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "ModelAttribute",
+      "description": "A primitive-typed field owned by a ModelClass. Fields whose values come from a ModelEnumeration must be modeled as relations to that enumeration, never as attributes.",
+      "additionalProperties": false
+    },
+    "ModelClass": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "description": "Primitive-typed fields owned by this class; do not include inherited attributes",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelAttribute"
+          },
+          "title": "List"
+        },
+        "description": {
+          "type": "string",
+          "title": "String",
+          "description": "Human-readable explanation of what this class represents in the business domain"
+        },
+        "domain": {
+          "type": "string",
+          "title": "String",
+          "description": "Logical grouping or bounded context this class belongs to (e.g., 'Finance', 'HR')"
+        },
+        "mother": {
+          "description": "Parent class for single inheritance — omit if no parent",
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "Reference by identity key (name) to a ModelClass serialised in full earlier in the document"
+            },
+            {
+              "$ref": "#/$defs/ModelClass"
+            }
+          ]
+        },
+        "name": {
+          "type": "string",
+          "title": "String",
+          "description": "Unique name of the class within the model; acts as the Jackson identity key for back-references"
+        },
+        "relations": {
+          "description": "Directed associations from this class to other classes; do not include inherited relations",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelClassRelation"
+          },
+          "title": "List"
+        },
+        "stereotypeInstances": {
+          "description": "Stereotypes applied to this artefact, each with its tagged-value instances",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelStereotypeInst"
+          },
+          "title": "List"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ModelClass",
+      "description": "An entity class in the model — corresponds to a UML class or JPA entity",
+      "additionalProperties": false
+    },
+    "ModelClassRelation": {
+      "type": "object",
+      "properties": {
+        "cardinality": {
+          "$ref": "#/$defs/RelationCardinality",
+          "description": "Multiplicity of this association end — see RelationCardinality enum"
+        },
+        "description": {
+          "type": "string",
+          "title": "String",
+          "description": "Human-readable explanation of what this relationship means in the business domain"
+        },
+        "name": {
+          "type": "string",
+          "title": "String",
+          "description": "Role name for the association on the target side (camelCase, e.g., 'orders', 'manager')"
+        },
+        "stereotypeInstances": {
+          "description": "Stereotypes applied to this artefact, each with its tagged-value instances",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelStereotypeInst"
+          },
+          "title": "List"
+        },
+        "target": {
+          "description": "The class — or enumeration — at the far end of this relation. For an enumeration target, use the inline object form {\\\"name\\\": \\\"<EnumName>\\\"} (an enumeration is never serialised as a class, so it cannot be referenced by identity-key string) and cardinality OneToOne. Example: {\\\"name\\\": \\\"statut\\\", \\\"target\\\": {\\\"name\\\": \\\"StatutDossier\\\"}, \\\"cardinality\\\": \\\"OneToOne\\\"}.",
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "Reference by identity key (name) to a ModelClass serialised in full earlier in the document"
+            },
+            {
+              "$ref": "#/$defs/ModelClass"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "target",
+        "cardinality"
+      ],
+      "title": "ModelClassRelation",
+      "description": "A directed association from one class to another, with a named role and cardinality",
+      "additionalProperties": false
+    },
+    "ModelEnumeration": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "title": "String",
+          "description": "Human-readable explanation of what concept this enumeration classifies"
+        },
+        "domain": {
+          "type": "string",
+          "title": "String",
+          "description": "Logical grouping or bounded context this enumeration belongs to"
+        },
+        "name": {
+          "type": "string",
+          "title": "String",
+          "description": "Unique name of the enumeration within the model (e.g., 'OrderStatus', 'Priority')"
+        },
+        "stereotypeInstances": {
+          "description": "Stereotypes applied to this artefact, each with its tagged-value instances",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelStereotypeInst"
+          },
+          "title": "List"
+        },
+        "values": {
+          "description": "The ordered list of constant literals; use SCREAMING_SNAKE_CASE for values",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelEnumerationLiteral"
+          },
+          "title": "List"
+        }
+      },
+      "required": [
+        "name",
+        "values"
+      ],
+      "title": "ModelEnumeration",
+      "description": "A named set of discrete constant values (e.g., statuses, lifecycle states). Classes use an enumeration by declaring a relation targeting it, not by naming it in an attribute's type.",
+      "additionalProperties": false
+    },
+    "ModelEnumerationLiteral": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "title": "String",
+          "description": "The description of the enumeration value"
+        },
+        "stereotypeInstances": {
+          "description": "Stereotypes applied to this artefact, each with its tagged-value instances",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelStereotypeInst"
+          },
+          "title": "List"
+        },
+        "value": {
+          "type": "string",
+          "title": "String",
+          "description": "The value of the enumeration value"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "title": "ModelEnumerationLiteral",
+      "description": "A named constant value within an enumeration",
+      "additionalProperties": false
+    },
+    "ModelPropertyType": {
+      "type": "string",
+      "enum": [
+        "STRING",
+        "TEXT",
+        "BOOLEAN",
+        "INTEGER",
+        "UNSIGNED",
+        "FLOAT",
+        "ENUMERATE",
+        "DATE",
+        "TIME",
+        "ELEMENT",
+        "RICHTEXT",
+        "MULTISTRING",
+        "MULTIELEMENT"
+      ],
+      "title": "ModelPropertyType",
+      "description": "Base type of a stereotype property value"
+    },
+    "ModelStereotype": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "title": "String",
+          "description": "Human-readable explanation of what this stereotype marks"
+        },
+        "moduleName": {
+          "type": "string",
+          "title": "String",
+          "description": "Name of the Modelio module that owns this stereotype, used only by Modelio to attach the stereotype to the right module when it imports the model; a stereotype is identified by its name, never by this value. Set it to \"GraphRag\" for the Graph-RAG stereotypes (GraphRagEntity, GraphRagIdentity, GraphRagEmbed): the Modelio module that declares them; never leave it null or empty"
+        },
+        "name": {
+          "type": "string",
+          "title": "String",
+          "description": "Unique name of the stereotype within the model; acts as the Jackson identity key for back-references (e.g., 'entity', 'persistent')"
+        },
+        "stereotypeProperties": {
+          "description": "Tagged-value (property) definitions carried by this stereotype",
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Reference by identity key (name) to a ModelStereotypeProperty serialised in full earlier in the document"
+              },
+              {
+                "$ref": "#/$defs/ModelStereotypeProperty"
+              }
+            ]
+          },
+          "title": "List"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ModelStereotype",
+      "description": "Definition of a stereotype that can be applied to model artefacts to carry extra semantics and tagged values",
+      "additionalProperties": false
+    },
+    "ModelStereotypeInst": {
+      "type": "object",
+      "properties": {
+        "modelStereotype": {
+          "description": "The stereotype definition being applied",
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "Reference by identity key (name) to a ModelStereotype serialised in full earlier in the document"
+            },
+            {
+              "$ref": "#/$defs/ModelStereotype"
+            }
+          ]
+        },
+        "stereotypePropertyInstances": {
+          "description": "Concrete values assigned to this stereotype's properties for the owning artefact",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModelStereotypePropertyInst"
+          },
+          "title": "List"
+        }
+      },
+      "required": [
+        "modelStereotype"
+      ],
+      "title": "ModelStereotypeInst",
+      "description": "An application of a Stereotype to a model artefact, holding the concrete tagged-value instances",
+      "additionalProperties": false
+    },
+    "ModelStereotypeProperty": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "title": "String",
+          "description": "Human-readable explanation of what this property holds"
+        },
+        "name": {
+          "type": "string",
+          "title": "String",
+          "description": "Unique name of the property / tagged value; acts as the Jackson identity key for back-references"
+        },
+        "type": {
+          "$ref": "#/$defs/ModelPropertyType",
+          "description": "Base type of the property value — see ModelPropertyType enum for allowed values"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ModelStereotypeProperty",
+      "description": "Definition of a single tagged value (property) carried by a Stereotype",
+      "additionalProperties": false
+    },
+    "ModelStereotypePropertyInst": {
+      "type": "object",
+      "properties": {
+        "stereotypeProperty": {
+          "description": "The property definition this value is for",
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "Reference by identity key (name) to a ModelStereotypeProperty serialised in full earlier in the document"
+            },
+            {
+              "$ref": "#/$defs/ModelStereotypeProperty"
+            }
+          ]
+        },
+        "valueAsString": {
+          "type": "string",
+          "title": "String",
+          "description": "The property value serialised as a string, per the property's ModelPropertyType"
+        }
+      },
+      "required": [
+        "stereotypeProperty"
+      ],
+      "title": "ModelStereotypePropertyInst",
+      "description": "A concrete value assigned to a ModelStereotypeProperty within a stereotype application",
+      "additionalProperties": false
+    },
+    "ModelType": {
+      "type": "string",
+      "enum": [
+        "Boolean",
+        "Byte",
+        "Char",
+        "Date",
+        "Double",
+        "Float",
+        "Integer",
+        "Long",
+        "Short",
+        "String"
+      ],
+      "title": "ModelType",
+      "description": "Primitive type of a model attribute. Primitives ONLY — an enumeration name is NOT a valid value here and will fail deserialization. To give a field enumeration-constrained values, do not declare it as an attribute: declare it as a ModelClassRelation whose target is the enumeration (see ModelClassRelation.target)."
+    },
+    "RelationCardinality": {
+      "type": "string",
+      "enum": [
+        "OneToMany",
+        "OneToOne",
+        "ManyToOne",
+        "ManyToMany"
+      ],
+      "title": "RelationCardinality",
+      "description": "Multiplicity of a class-association end"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional link to this schema for editor validation and completion; ignored by the product"
+    },
+    "classes": {
+      "description": "All entity classes in the model",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Reference by identity key (name) to a ModelClass serialised in full earlier in the document"
+          },
+          {
+            "$ref": "#/$defs/ModelClass"
+          }
+        ]
+      },
+      "title": "List"
+    },
+    "enumerations": {
+      "description": "All named enumeration types in the model",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Reference by identity key (name) to a ModelEnumeration serialised in full earlier in the document"
+          },
+          {
+            "$ref": "#/$defs/ModelEnumeration"
+          }
+        ]
+      },
+      "title": "List"
+    },
+    "modelStereotypes": {
+      "description": "All stereotype definitions referenced by the artefacts of this model, each written in full here once, with its stereotypeProperties and its moduleName (\"GraphRag\" for the Graph-RAG stereotypes); artefacts then reference a stereotype and its properties by name",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Reference by identity key (name) to a ModelStereotype serialised in full earlier in the document"
+          },
+          {
+            "$ref": "#/$defs/ModelStereotype"
+          }
+        ]
+      },
+      "title": "List"
+    }
+  },
+  "required": [
+    "classes"
+  ],
+  "title": "RootModel",
+  "description": "Root container of a UML-like data model",
+  "additionalProperties": false
+}

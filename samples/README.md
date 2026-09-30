@@ -2,7 +2,7 @@
 
 Public IT architecture documents found on the web and used as test data for the Graph RAG enterprise architecture agent. Each document in this folder describes a **real IT landscape**: named business capabilities, applications, the exchanges between them, and the infrastructure they run on. Together they stand in for the documents an IT department's architecture repository would hold.
 
-Documents about *how to practise* enterprise architecture (frameworks, standards, templates) are deliberately left out. The numbering has gaps (02, 03, 11, 12) where such documents were removed.
+Documents about *how to practise* enterprise architecture (frameworks, standards, templates) are deliberately left out. The numbering has gaps (02, 03, 11, 12, 15, 17) where documents were removed: frameworks, standards, templates and worked examples (02, 03, 11, 12), and two documents that are mostly practice or planning rather than a landscape (15: a state transformation plan, of which about 6 of 169 pages describe the current state; 17: an audit of a modernisation programme, whose findings and recommendations outweigh its description of the systems).
 
 All files were downloaded on 2026-09-29. Page counts and dates come from the PDFs themselves.
 
@@ -22,9 +22,7 @@ All files were downloaded on 2026-09-29. Page counts and dates come from the PDF
 | 10 | RIT Co-op Evaluation System architecture | | ✓ | ✓ | | EN |
 | 13 | VITAM technical architecture (DAT) | | ✓ | ✓ | ✓ | FR |
 | 14 | Kash.click technical architecture (DAT) | | ✓ | | ✓ | FR |
-| 15 | Hawaii State EA, current and target state | ✓ | ✓ | | ✓ | EN |
 | 16 | Vermont Medicaid MITA self-assessment | ✓ | ✓ | ✓ | | EN |
-| 17 | NC DMV IT modernization audit | ✓ | ✓ | ✓ | ✓ | EN |
 | 18 | Sud-Essonne hospital IT master plan (SDSI) | | ✓ | | ✓ | FR |
 | 19 | Minnesota SSIS/MMIS interface specification | | | ✓ | | EN |
 | 20 | CMS MBDSS interface control document | | | ✓ | | EN |
@@ -44,9 +42,7 @@ All files were downloaded on 2026-09-29. Page counts and dates come from the PDF
 | 10 | `10_SAD_Co-op-Evaluation-System_RIT.pdf` | Software architecture document | Rochester Institute of Technology | 2014 | 28 | 0.8 MB |
 | 13 | `13_DAT_VITAM-Archivage-Numerique_FR.pdf` | Technical architecture document (DAT) | Programme Vitam (French government) | Jun 2026 | 220 | 7.9 MB |
 | 14 | `14_DAT_Kash-Click-Caisse-SaaS_FR.pdf` | Technical architecture document (DAT) | Net-Assembly (Kash.click) | Jan 2026 | 30 | 0.9 MB |
-| 15 | `15_EA-Current-Target_Hawaii-State.pdf` | EA current and target state | State of Hawaii, OIMT | Oct 2012 | 169 | 10.2 MB |
 | 16 | `16_Business-Systems-Assessment_MITA_Vermont-Medicaid.pdf` | Business and systems assessment | Vermont Agency of Human Services | 2023 | 399 | 3.4 MB |
-| 17 | `17_Systems-Landscape-Audit_NC-DMV.pdf` | IT systems audit | North Carolina Office of the State Auditor | Aug 2025 | 159 | 9.7 MB |
 | 18 | `18_SDSI_CH-Sud-Essonne-Hopital_FR.pdf` | IT master plan (SDSI) | Centre Hospitalier Sud Essonne | Sep 2021 | 9 | 1.2 MB |
 | 19 | `19_Interface-Spec_SSIS-MMIS_Minnesota-DHS.pdf` | Interface specification | Minnesota Department of Human Services | Aug 2009 | 174 | 1.3 MB |
 | 20 | `20_ICD_MBDSS-TBQ_CMS.pdf` | Interface control document | Centers for Medicare & Medicaid Services | Dec 2011 | 33 | 0.3 MB |
@@ -60,17 +56,9 @@ All files were downloaded on 2026-09-29. Page counts and dates come from the PDF
 A US federal agency's EA blueprint. It describes the agency's architecture domain by domain (business process, data, applications, infrastructure, common services, tools and repositories) together with the standards and shared components its systems must use.
 Source: <https://www.pbgc.gov/documents/enterprisearchitectureblueprint.pdf>
 
-**15 — Hawaii Business and IT/IRM Transformation Plan: Enterprise Architecture**
-A state-wide EA with current-state and future-state views for each layer: business (EBA), information (EIA), solutions and applications (ESA), and technology. It covers the replacement of the financial system, enterprise integration and shared data services, and infrastructure upgrades.
-Source: <https://ets.hawaii.gov/wp-content/uploads/2012/09/Enterprise-Architecture.pdf>
-
 **16 — Vermont MITA 3.0 State Self-Assessment, Detailed Report**
 An assessment of Vermont's Medicaid enterprise. It lists the existing systems and components (Medicaid claims system MMIS, the ACCESS eligibility system, Vermont Health Connect, the EDI translator, provider and care management modules, the Vermont health information exchange and its connectivity), then gives a business capability matrix and process-by-process findings with as-is and to-be gap analysis. It is the strongest business architecture sample in the set.
 Source: <https://bgs.vermont.gov/sites/bgs/files/files/purchasing-contracting/VT%20IES%20Documents/MITA%203.0%20State%20Self-Assessment%20Detailed%20Report_2023.pdf>
-
-**17 — NC Division of Motor Vehicles IT Modernization, Information Systems Audit**
-An audit of the DMV's modernization programme. It names the seven legacy mainframe systems (driver licences, titling and registration, insurance tracking, commercial vehicles, crash records, inspections, emissions), states that about 50 federal, state and local applications connect to them, and describes the planned move from mainframe to .NET (NC MAX). Appendices include the downtime history and a third-party modernization evaluation.
-Source: <https://files.nc.gov/nc-auditor/documents/2025-08/ISA-2025-4200A.pdf>
 
 **18 — Centre Hospitalier Sud Essonne, Schéma directeur du SI 2021–2025** (French)
 A hospital's IT master plan. It describes the current infrastructure (dual network core on two sites linked by a radio link, two server rooms, high availability), the application portfolio, and the target projects for 2021–2025.
@@ -140,7 +128,7 @@ Source: <https://www.in.gov/ifa/files/Collections-ICD-V1.0-02042027.pdf>
 The publishers keep all rights to these documents. They are stored here only as test data for development. Before pushing them to a public repository, check each source's terms:
 
 - **01, 05, 06, 20** are US federal government works and are generally in the public domain.
-- **04, 07, 15, 16, 17, 19** are US state or local government publications; their reuse terms vary by publisher.
+- **04, 07, 16, 19** are US state or local government publications; their reuse terms vary by publisher.
 - **13** is published by a French government programme; **18** by a French public hospital.
 - **14** is licensed CC BY 4.0 (attribution required).
 - **21** is marked "Confidential and Proprietary" by its author, ETC, although the State of Indiana publishes it.

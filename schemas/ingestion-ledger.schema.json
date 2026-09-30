@@ -1,0 +1,373 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/acceliance/Graph-Rag-Deploy/main/schemas/ingestion-ledger.schema.json",
+  "title": "IngestionLedger",
+  "description": "Per-document ingestion ledger (DFS §4.6). One file per document on /data/api/ingestion/<docId>.json. It is the audit trail, the retry and resume source (FR-163), the input of the re-index (FR-122) and rebuild (§17.3) jobs, and the contract of GET /documents/{id}/ledger. Written by the API only.",
+  "type": "object",
+  "required": ["ledgerVersion", "docId", "sha256", "filename", "state", "modelVersion", "steps", "createdAt", "updatedAt"],
+  "properties": {
+    "ledgerVersion": { "type": "integer", "minimum": 1, "description": "Layout version of this file, migrated by the product at start-up (DFS §17.1)." },
+    "docId": { "$ref": "#/$defs/Uuid" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "filename": { "type": "string", "minLength": 1 },
+    "title": { "type": "string" },
+    "sizeBytes": { "type": "integer", "minimum": 0 },
+    "pages": { "type": "integer", "minimum": 0 },
+    "uploadedBy": { "type": "string" },
+    "createdAt": { "$ref": "#/$defs/DateTime" },
+    "updatedAt": { "$ref": "#/$defs/DateTime" },
+    "state": { "$ref": "#/$defs/DocumentState" },
+    "reason": {
+      "type": ["string", "null"],
+      "description": "Reason code for REJECTED / FAILED / BUDGET_HOLD (e.g. NO_TEXT, NO_CLASS_MATCH, NOT_RELEVANT, CANCELLED, BUDGET)."
+    },
+    "modelVersion": { "type": "integer", "minimum": 1, "description": "Model version this ledger's extraction targets (the active one at ingestion, or the target of a re-index)." },
+    "forcedBy": { "type": ["string", "null"], "description": "User who forced a rejected document (FR-146), else null." },
+    "steps": {
+      "type": "array",
+      "description": "Every step run so far, in order; a step may appear several times after retries or resumes.",
+      "items": { "$ref": "#/$defs/Step" }
+    },
+    "parse": { "$ref": "#/$defs/ParseResult" },
+    "chunks": {
+      "type": "array",
+      "description": "Chunk inventory after chunking; the text itself lives in Qdrant payloads and in the parse rendition, not here.",
+      "items": { "$ref": "#/$defs/Chunk" }
+    },
+    "gate": { "$ref": "#/$defs/GateResult" },
+    "estimate": { "$ref": "#/$defs/Estimate" },
+    "extraction": { "$ref": "#/$defs/ExtractionResult" },
+    "projection": { "$ref": "#/$defs/ProjectionResult" },
+    "index": { "$ref": "#/$defs/IndexResult" },
+    "errors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/LedgerError" }
+    },
+    "history": {
+      "type": "array",
+      "description": "Previous extraction results kept after a re-index (FR-124): one entry per superseded model version.",
+      "items": {
+        "type": "object",
+        "required": ["modelVersion", "supersededAt", "extraction"],
+        "properties": {
+          "modelVersion": { "type": "integer", "minimum": 1 },
+          "supersededAt": { "$ref": "#/$defs/DateTime" },
+          "extraction": { "$ref": "#/$defs/ExtractionResult" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+
+  "$defs": {
+    "Uuid": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+    "DateTime": { "type": "string", "format": "date-time" },
+    "Confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "Lang": { "type": "string", "pattern": "^[a-z]{2}$" },
+
+    "DocumentState": {
+      "type": "string",
+      "enum": ["RECEIVED", "QUEUED", "PARSED", "GATED", "REJECTED", "FORCED", "BUDGET_HOLD", "EXTRACTED", "PROJECTED", "INDEXED", "DONE", "FAILED"],
+      "description": "Pipeline state machine (DFS §6.4). Terminal: DONE, REJECTED (unless forced), FAILED (retryable)."
+    },
+    "StepName": {
+      "type": "string",
+      "enum": ["receive", "parse", "ocr", "chunk", "gate-coverage", "gate-triage", "estimate", "extract", "resolve", "project", "index", "verify"]
+    },
+    "StepStatus": {
+      "type": "string",
+      "enum": ["running", "ok", "skipped", "failed", "cancelled"]
+    },
+    "Step": {
+      "type": "object",
+      "required": ["name", "status", "startedAt"],
+      "properties": {
+        "name": { "$ref": "#/$defs/StepName" },
+        "status": { "$ref": "#/$defs/StepStatus" },
+        "startedAt": { "$ref": "#/$defs/DateTime" },
+        "endedAt": { "$ref": "#/$defs/DateTime" },
+        "attempt": { "type": "integer", "minimum": 1, "default": 1 },
+        "detail": { "type": "string", "maxLength": 4000 },
+        "correlationId": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ParseResult": {
+      "type": "object",
+      "required": ["pages", "textPages", "ocrPages"],
+      "properties": {
+        "pages": { "type": "integer", "minimum": 0 },
+        "textPages": { "type": "integer", "minimum": 0, "description": "Pages whose native text layer was used." },
+        "ocrPages": { "type": "integer", "minimum": 0, "description": "Pages that went through OCR (FR-142)." },
+        "ocrLangs": { "type": "string", "description": "Tesseract language string used, e.g. fra+eng." },
+        "ocrMeanConfidence": { "$ref": "#/$defs/Confidence" },
+        "ocrLowConfidencePages": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "description": "Pages under the confidence floor (FR-155)." },
+        "renditionPath": { "type": "string", "description": "Relative path of the searchable-PDF rendition when OCR ran." },
+        "strippedHeaderLines": { "type": "integer", "minimum": 0 },
+        "tables": { "type": "integer", "minimum": 0, "description": "Tables detected and serialised (DFS §6.7)." },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+
+    "Chunk": {
+      "type": "object",
+      "required": ["index", "page", "tokenCount", "pointId"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "page": { "type": "integer", "minimum": 1 },
+        "pageEnd": { "type": "integer", "minimum": 1, "description": "Set when the overlap crosses into the next page." },
+        "tokenCount": { "type": "integer", "minimum": 0 },
+        "pointId": { "$ref": "#/$defs/Uuid", "description": "UUIDv5 of (docId, index) — the Qdrant point id." },
+        "hasTable": { "type": "boolean", "default": false },
+        "bbox": {
+          "type": "array",
+          "description": "Bounding boxes on the page used by the viewer highlight (NF-14): [x0, y0, x1, y1] in PDF points, one per text block.",
+          "items": { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4 }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "GateResult": {
+      "type": "object",
+      "required": ["coverage", "relevant"],
+      "properties": {
+        "coverage": { "$ref": "#/$defs/Confidence", "description": "Share of chunks covered by an anchor class profile (stage 1)." },
+        "coverageByClass": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/Confidence" }
+        },
+        "triageRan": { "type": "boolean", "description": "False when stage 1 rejected without an LLM call." },
+        "relevant": { "type": "boolean" },
+        "matchedClasses": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "confidence": { "$ref": "#/$defs/Confidence" },
+        "reason": { "type": "string", "maxLength": 2000 },
+        "lang": { "$ref": "#/$defs/Lang" },
+        "topChunks": { "type": "array", "items": { "type": "integer", "minimum": 0 }, "description": "Chunk indexes sent to the triage call." },
+        "promptVersion": { "type": "string" },
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "thresholds": {
+          "type": "object",
+          "properties": {
+            "similarityFloor": { "$ref": "#/$defs/Confidence" },
+            "coverageFloor": { "$ref": "#/$defs/Confidence" },
+            "confidenceThreshold": { "$ref": "#/$defs/Confidence" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Estimate": {
+      "type": "object",
+      "required": ["calls", "tokensIn", "tokensOut"],
+      "properties": {
+        "calls": { "type": "integer", "minimum": 0 },
+        "tokensIn": { "type": "integer", "minimum": 0 },
+        "tokensOut": { "type": "integer", "minimum": 0 },
+        "cost": {
+          "type": "object",
+          "required": ["amount", "currency"],
+          "properties": {
+            "amount": { "type": "number", "minimum": 0 },
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+          },
+          "additionalProperties": false
+        },
+        "budget": {
+          "type": "object",
+          "description": "Budget decision (FR-161).",
+          "properties": {
+            "decision": { "type": "string", "enum": ["within", "held", "approved", "rejected"] },
+            "approvedBy": { "type": "string" },
+            "approvedAt": { "$ref": "#/$defs/DateTime" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExtractionResult": {
+      "type": "object",
+      "required": ["modelVersion", "provider", "model", "promptVersion", "groups"],
+      "properties": {
+        "modelVersion": { "type": "integer", "minimum": 1 },
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "promptVersion": { "type": "string" },
+        "overrideHash": { "type": "string", "description": "Hash of the applied prompt override/profile (FR-240), empty when none." },
+        "groups": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/GroupResult" }
+        },
+        "resolution": { "$ref": "#/$defs/ResolutionResult" },
+        "usage": { "$ref": "#/$defs/Usage" }
+      },
+      "additionalProperties": false
+    },
+    "GroupResult": {
+      "type": "object",
+      "required": ["group", "classes", "windows", "entities"],
+      "properties": {
+        "group": { "type": "string" },
+        "classes": { "type": "array", "items": { "type": "string" } },
+        "schemaHash": { "type": "string", "description": "Hash of the generated extraction schema (DFS §4.8)." },
+        "split": { "type": "boolean", "default": false, "description": "True when rule G6 split the group." },
+        "windows": { "type": "integer", "minimum": 0, "description": "Number of chunk windows sent." },
+        "entities": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ExtractedEntity" }
+        },
+        "droppedRelations": {
+          "type": "array",
+          "description": "Relations dropped by rule G5 or by an unresolved target.",
+          "items": {
+            "type": "object",
+            "required": ["localId", "name", "code"],
+            "properties": {
+              "localId": { "type": "string" },
+              "name": { "type": "string" },
+              "code": { "type": "string", "enum": ["ENUM_LITERAL_UNKNOWN", "TARGET_UNRESOLVED", "CARDINALITY"] },
+              "rawValue": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "repairs": { "type": "integer", "minimum": 0, "description": "Repair attempts after schema validation failures." }
+      },
+      "additionalProperties": false
+    },
+    "ExtractedEntity": {
+      "type": "object",
+      "required": ["localId", "class", "attributes", "confidence", "evidence"],
+      "properties": {
+        "localId": { "type": "string" },
+        "class": { "type": "string" },
+        "attributes": { "type": "object", "description": "Raw values as returned by the model, before normalisation." },
+        "normalised": { "type": "object", "description": "Values after the API's normalisation (DFS §4.7): <attr>_norm." },
+        "identityHash": { "type": "string", "pattern": "^[a-f0-9]{64}$", "description": "Absent for value objects." },
+        "uid": { "$ref": "#/$defs/Uuid" },
+        "confidence": { "$ref": "#/$defs/Confidence" },
+        "evidence": { "type": "array", "items": { "type": "integer", "minimum": 0 }, "description": "Chunk indexes." },
+        "pages": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "target"],
+            "properties": {
+              "name": { "type": "string" },
+              "target": {
+                "type": "object",
+                "description": "One of localId (same call), identity (any document) or value (enumeration literal).",
+                "properties": {
+                  "localId": { "type": "string" },
+                  "class": { "type": "string" },
+                  "identity": { "type": "object" },
+                  "value": { "type": "string" }
+                },
+                "additionalProperties": false
+              },
+              "confidence": { "$ref": "#/$defs/Confidence" },
+              "resolvedUid": { "$ref": "#/$defs/Uuid" },
+              "stubCreated": { "type": "boolean", "default": false }
+            },
+            "additionalProperties": false
+          }
+        },
+        "warnings": { "type": "array", "items": { "type": "string", "enum": ["RANGE", "DATE_AMBIGUOUS", "TRUNCATED", "CONFLICT"] } }
+      },
+      "additionalProperties": false
+    },
+    "ResolutionResult": {
+      "type": "object",
+      "description": "Entity-resolution outcome across chunks and against the graph (FR-148).",
+      "properties": {
+        "mergedWithinDocument": { "type": "integer", "minimum": 0 },
+        "matchedExisting": { "type": "integer", "minimum": 0 },
+        "fuzzyAutoMerged": { "type": "integer", "minimum": 0 },
+        "reviewCandidates": { "type": "integer", "minimum": 0 },
+        "created": { "type": "integer", "minimum": 0 },
+        "stubsCreated": { "type": "integer", "minimum": 0 },
+        "stubsFilled": { "type": "integer", "minimum": 0 },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["uid", "attribute", "kept", "discarded"],
+            "properties": {
+              "uid": { "$ref": "#/$defs/Uuid" },
+              "attribute": { "type": "string" },
+              "kept": { "type": "string" },
+              "discarded": { "type": "string" },
+              "keptConfidence": { "$ref": "#/$defs/Confidence" },
+              "discardedConfidence": { "$ref": "#/$defs/Confidence" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ProjectionResult": {
+      "type": "object",
+      "required": ["nodesMerged", "edgesMerged", "committedAt"],
+      "properties": {
+        "nodesMerged": { "type": "integer", "minimum": 0 },
+        "edgesMerged": { "type": "integer", "minimum": 0 },
+        "enumEdges": { "type": "integer", "minimum": 0 },
+        "evidenceEdges": { "type": "integer", "minimum": 0 },
+        "committedAt": { "$ref": "#/$defs/DateTime" },
+        "transactionId": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "IndexResult": {
+      "type": "object",
+      "required": ["collection", "points", "confirmedAt"],
+      "properties": {
+        "collection": { "type": "string" },
+        "embeddingModel": { "type": "string" },
+        "embeddingDim": { "type": "integer", "minimum": 1 },
+        "points": { "type": "integer", "minimum": 0, "description": "Chunk points upserted." },
+        "attributePoints": { "type": "integer", "minimum": 0, "description": "Attribute points (kind = attribute) upserted." },
+        "confirmedAt": { "$ref": "#/$defs/DateTime", "description": "When Qdrant confirmed the upsert; DONE requires both this and projection.committedAt." },
+        "usage": { "$ref": "#/$defs/Usage" }
+      },
+      "additionalProperties": false
+    },
+
+    "Usage": {
+      "type": "object",
+      "properties": {
+        "calls": { "type": "integer", "minimum": 0 },
+        "tokensIn": { "type": "integer", "minimum": 0 },
+        "tokensOut": { "type": "integer", "minimum": 0 },
+        "durationMs": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+
+    "LedgerError": {
+      "type": "object",
+      "required": ["at", "step", "code", "message"],
+      "properties": {
+        "at": { "$ref": "#/$defs/DateTime" },
+        "step": { "$ref": "#/$defs/StepName" },
+        "code": { "type": "string" },
+        "message": { "type": "string", "maxLength": 4000 },
+        "retryable": { "type": "boolean", "default": true },
+        "correlationId": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
