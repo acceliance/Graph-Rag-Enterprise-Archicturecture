@@ -93,11 +93,11 @@ Go to **Administration ▸ AI settings**.
 
    ![The three AI slots](images/03-ai-slots.jpg)
 
-| Slot | Role | Example (OpenAI) | Example (on-premises) |
-|---|---|---|---|
-| Chat | Answers the questions | `gpt-4.1` | `qwen3.5:9b` |
-| Extraction | Reads the PDFs into the model's classes | `gpt-4.1-mini` | `qwen2.5:7b-instruct` |
-| Embeddings | Vectors for search | `text-embedding-3-small` | `bge-m3` |
+| Slot | Role | Example (OpenAI) | Example (Anthropic) | Example (on-premises) |
+|---|---|---|---|---|
+| Chat | Answers the questions | `gpt-4.1` | `claude-opus-5-5` (or `claude-sonnet-5-5`) | `qwen3.5:9b` |
+| Extraction | Reads the PDFs into the model's classes | `gpt-4.1-mini` | `claude-sonnet-5-5` (or `claude-haiku-5-5`) | `qwen2.5:7b-instruct` |
+| Embeddings | Vectors for search | `text-embedding-3-small` | — (Anthropic serves no embedding model: use OpenAI or on-premises) | `bge-m3` |
 
 > Choose the embedding model now. The model version you initialise in step 4 is bound to it:
 > changing it later means re-indexing.
