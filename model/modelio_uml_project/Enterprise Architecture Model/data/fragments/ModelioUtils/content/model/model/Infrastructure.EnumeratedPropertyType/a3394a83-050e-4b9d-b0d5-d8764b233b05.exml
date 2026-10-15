@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="ForceLogExceptionStack" version="4">
+  <OBJECT>
+    <ID name="ForceLogExceptionStack" mc="Infrastructure.EnumeratedPropertyType" uid="a3394a83-050e-4b9d-b0d5-d8764b233b05"/>
+    <PID name="ModelioUtils" mc="Infrastructure.ModuleComponent" uid="fa1e4084-aa47-4c3b-9831-d7cf7f78986b"/>
+    <ATTRIBUTES>
+      <ATT name="BaseType">String</ATT>
+      <ATT name="Name"><![CDATA[ForceLogExceptionStack]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Litteral">
+        <OBJECT>
+          <ID name="LeaveAsIs" mc="Infrastructure.PropertyEnumerationLitteral" uid="020e422c-9497-433a-bf23-eb96a2a6c823"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[LeaveAsIs]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="ForceGeneration" mc="Infrastructure.PropertyEnumerationLitteral" uid="cf1f82d5-ac66-4cb3-bdfc-583a7e465bef"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[ForceGeneration]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

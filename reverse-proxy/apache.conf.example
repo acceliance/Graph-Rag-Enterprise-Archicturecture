@@ -1,0 +1,29 @@
+# Acceliance Graph-RAG — Apache front door example (TLS termination on the host).
+# Modules: proxy, proxy_http, ssl, headers, rewrite.
+# Assumes the stack binds to 127.0.0.1:8080 (GRAPHRAG_HTTP_BIND=127.0.0.1 in .env).
+
+<VirtualHost *:80>
+    ServerName graphrag.example.com
+    RewriteEngine On
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName graphrag.example.com
+
+    SSLEngine on
+    SSLCertificateFile    /etc/letsencrypt/live/graphrag.example.com/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/graphrag.example.com/privkey.pem
+    Header always set Strict-Transport-Security "max-age=31536000"
+
+    # >= GRAPHRAG_MAX_UPLOAD_MB (bytes), with headroom
+    LimitRequestBody 62914560
+
+    # Keep Host (with port) for the MCP allow-list; long timeout for the agent.
+    ProxyPreserveHost On
+    ProxyTimeout 300
+    RequestHeader set X-Forwarded-Proto "https"
+
+    ProxyPass        / http://127.0.0.1:8080/ retry=0
+    ProxyPassReverse / http://127.0.0.1:8080/
+</VirtualHost>

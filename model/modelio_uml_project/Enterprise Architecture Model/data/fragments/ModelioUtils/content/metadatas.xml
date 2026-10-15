@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<ram-component manifest-version="2.0.02" name="ModelioUtils" version="0" release="0" clevel="0" modelioVersion="5.4.01" provider="">
+  <description><![CDATA[]]></description>
+  <dependencies></dependencies>
+  <contributors></contributors>
+  <metamodels>
+    <metamodel name="Infrastructure" version="2.1.04"/>
+  </metamodels>
+  <roots>
+    <root metaclass="Infrastructure.ModuleComponent" name="ModelioUtils" uuid="fa1e4084-aa47-4c3b-9831-d7cf7f78986b"/>
+  </roots>
+</ram-component>

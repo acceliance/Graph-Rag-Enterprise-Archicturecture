@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="CartographyManagerTranslation" version="4">
+  <OBJECT>
+    <ID name="CartographyManagerTranslation" mc="Infrastructure.Stereotype" uid="26EE79C3-B9DB-4D36-BB23-E4AC8D3D851C"/>
+    <PID name="CartographyManagerProfile" mc="Infrastructure.Profile" uid="C563B0C9-8BF9-4BEE-93B9-F89DED4E9584"/>
+    <ATTRIBUTES>
+      <ATT name="Image"><![CDATA[res/icons/logo-acc-seul-16.png]]></ATT>
+      <ATT name="Icon"></ATT>
+      <ATT name="IsHidden">true</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="LabelKey"><![CDATA[Translation]]></ATT>
+      <ATT name="BaseClassName"><![CDATA[UmlModelElement]]></ATT>
+      <ATT name="Name"><![CDATA[CartographyManagerTranslation]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES></DEPENDENCIES>
+  </OBJECT>
+</EXT>

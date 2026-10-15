@@ -1,0 +1,193 @@
+name: graphrag
+
+# =============================================================================
+#  Acceliance Graph-RAG — public deployment kit
+#
+#  Four services, no `build:` section anywhere: this file only PULLS images.
+#     graphrag-web   nginx edge + SPA           the ONLY published port
+#     graphrag-api   FastAPI (compiled image)   internal network only
+#     neo4j          facts (typed graph)        internal network only
+#     qdrant         evidence (vectors)         internal network only
+#
+#  Usage (see README.md):
+#     cp .env.example .env      # then set NEO4J_PASSWORD and QDRANT_API_KEY
+#     docker compose pull
+#     docker compose up -d
+#  or simply  scripts/up.sh  /  scripts/up.ps1  (they generate the secrets).
+#
+#  Rules this file enforces, on purpose:
+#   1. No database port is published. Neo4j (7474/7687) and Qdrant (6333/6334)
+#      are reachable only from `graphrag-net`. The web edge is the single way in.
+#   2. Secrets are REQUIRED, not defaulted: NEO4J_PASSWORD and QDRANT_API_KEY
+#      have no fallback — the stack refuses to start rather than run with a
+#      documented value.
+#   3. Every piece of mutable state lives under ./data/, bind-mounted. Pulling
+#      a new image never touches it. ./data/api alone is enough to rebuild the
+#      two stores (see README "Rebuild from originals").
+#   4. Log rotation, no-new-privileges, health checks and ordered start-up.
+#
+#  TLS: this file publishes plain HTTP on GRAPHRAG_HTTP_PORT. Put a reverse proxy
+#  in front (reverse-proxy/ has nginx and Apache examples). AUTH_COOKIE_SECURE
+#  defaults to true, which REQUIRES HTTPS; set it to false only for an HTTP pilot.
+# =============================================================================
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+
+  # ── 1. Qdrant — evidence store (chunks, hybrid dense + sparse vectors) ──────
+  qdrant:
+    image: qdrant/qdrant:${QDRANT_TAG:-v1.15.5}
+    container_name: graphrag-qdrant
+    restart: unless-stopped
+    environment:
+      # Internal auth on the Docker network. The API refuses to start on an
+      # empty key unless GRAPHRAG_ALLOW_UNSECURED_QDRANT=true.
+      - QDRANT__SERVICE__API_KEY=${QDRANT_API_KEY:?set QDRANT_API_KEY in .env}
+      - QDRANT__TELEMETRY_DISABLED=true
+    volumes:
+      - ./data/qdrant:/qdrant/storage
+    healthcheck:
+      # The qdrant image ships no curl/wget: open a TCP socket to the REST port.
+      test: ["CMD-SHELL", "bash -c ':> /dev/tcp/127.0.0.1/6333' || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+    networks:
+      - graphrag-net
+
+  # ── 2. Neo4j — facts store (metamodel + typed instance graph) ───────────────
+  neo4j:
+    image: neo4j:${NEO4J_TAG:-5.26-community}
+    container_name: graphrag-neo4j
+    restart: unless-stopped
+    environment:
+      - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD:?set NEO4J_PASSWORD in .env}
+      - NEO4J_server_memory_heap_initial__size=${NEO4J_HEAP_INITIAL:-1G}
+      - NEO4J_server_memory_heap_max__size=${NEO4J_HEAP_MAX:-2G}
+      - NEO4J_server_memory_pagecache_size=${NEO4J_PAGECACHE:-1G}
+      # Neo4j must not phone home from a customer's network.
+      - NEO4J_server_config_strict__validation_enabled=false
+      - NEO4J_dbms_usage__report_enabled=false
+    volumes:
+      - ./data/neo4j/data:/data
+      - ./data/neo4j/logs:/logs
+      - ./data/neo4j/import:/var/lib/neo4j/import
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:7474"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+    networks:
+      - graphrag-net
+
+  # ── 3. graphrag-api — the only data-access layer ────────────────────────────
+  graphrag-api:
+    image: ${GRAPHRAG_API_IMAGE:?set GRAPHRAG_API_IMAGE in .env}
+    container_name: graphrag-api
+    restart: unless-stopped
+    volumes:
+      # Persistent state ONLY — code comes from the image. Holds the original
+      # PDFs, OCR renditions, ingestion ledgers, model files, prompt overrides,
+      # profiles, users, AI configuration (keys entered from the UI), MCP store.
+      # The image runs as UID 10001: on Linux, this folder must be writable by
+      # that user (scripts/up.sh prints the chown command when it is not).
+      - ./data/api:/data
+    environment:
+      # Datastores (service names on graphrag-net)
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD:?set NEO4J_PASSWORD in .env}
+      - QDRANT_URL=http://qdrant:6333
+      - QDRANT_API_KEY=${QDRANT_API_KEY:?set QDRANT_API_KEY in .env}
+      - QDRANT_ON_DISK_VECTORS=${QDRANT_ON_DISK_VECTORS:-false}
+      - GRAPHRAG_ALLOW_UNSECURED_QDRANT=${GRAPHRAG_ALLOW_UNSECURED_QDRANT:-false}
+
+      # Persistent state root inside the container
+      - GRAPHRAG_DATA_DIR=/data
+
+      # Ingestion limits (DFS §8.4)
+      - GRAPHRAG_MAX_UPLOAD_MB=${GRAPHRAG_MAX_UPLOAD_MB:-50}
+      - GRAPHRAG_MAX_PAGES=${GRAPHRAG_MAX_PAGES:-500}
+      - GRAPHRAG_OCR_LANGS=${GRAPHRAG_OCR_LANGS:-fra+eng}
+      - GRAPHRAG_RETENTION_DAYS=${GRAPHRAG_RETENTION_DAYS:-0}
+
+      # Agent loop budget. Provider keys, on-premises URLs and model names are
+      # NOT here: they are entered from Admin ▸ AI settings and stored on /data.
+      - AGENT_MAX_ITERS=${AGENT_MAX_ITERS:-10}
+      - AGENT_MAX_TOKENS=${AGENT_MAX_TOKENS:-4096}
+
+      # Session cookie. `Secure` requires HTTPS in front of the stack.
+      - AUTH_COOKIE_SECURE=${AUTH_COOKIE_SECURE:-true}
+      - AUTH_SESSION_TTL_SECONDS=${AUTH_SESSION_TTL_SECONDS:-43200}
+
+      # MCP endpoint (DFS §7). The switch and the key are administered from the
+      # UI; MCP_ENABLED=false is a deployment VETO (nothing mounted).
+      #   unset  → administrable from Admin ▸ MCP (off until enabled there)
+      #   false  → veto
+      #   true   → available and on from the first start
+      - MCP_ENABLED=${MCP_ENABLED:-}
+      # REQUIRED for any deployment not reached over localhost, else 421.
+      - MCP_ALLOWED_HOSTS=${MCP_ALLOWED_HOSTS:-}
+      - MCP_ALLOWED_ORIGINS=${MCP_ALLOWED_ORIGINS:-}
+
+      - TZ=${TZ:-Europe/Paris}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+    networks:
+      - graphrag-net
+
+  # ── 4. graphrag-web — nginx edge + SPA; the ONLY published port ─────────────
+  graphrag-web:
+    image: ${GRAPHRAG_WEB_IMAGE:?set GRAPHRAG_WEB_IMAGE in .env}
+    container_name: graphrag-web
+    restart: unless-stopped
+    ports:
+      # Bind to 127.0.0.1 (GRAPHRAG_HTTP_BIND) when a reverse proxy on the host
+      # terminates TLS; leave 0.0.0.0 when this IS the front door (pilot only).
+      - "${GRAPHRAG_HTTP_BIND:-0.0.0.0}:${GRAPHRAG_HTTP_PORT:-8080}:80"
+    environment:
+      - GRAPHRAG_API_UPSTREAM=http://graphrag-api:8000
+      - AUTH_MODE=standalone
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:80/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    depends_on:
+      graphrag-api:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    logging: *logging
+    networks:
+      - graphrag-net
+
+networks:
+  graphrag-net:
+    driver: bridge

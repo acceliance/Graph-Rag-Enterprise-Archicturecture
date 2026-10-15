@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Business" version="4">
+  <OBJECT>
+    <ID name="Business" mc="Standard.Package" uid="0b9b26b7-a645-468c-a384-e0e603a4179c"/>
+    <PID name="enterprisearchi" mc="Standard.Package" uid="ff059f17-ce56-48f2-bf1b-17a98c9881b8"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[Business]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedElement">
+        <COMPID name="BusinessArea" mc="Standard.Class" uid="c6fde7f3-9d78-40fa-bd8f-93d246ea18df"/>
+        <COMPID name="BusinessCapability" mc="Standard.Class" uid="3429b11c-7978-4bbb-aced-182720568491"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

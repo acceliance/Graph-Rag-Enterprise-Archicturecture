@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="GraphRagMatchKind" version="4">
+  <OBJECT>
+    <ID name="GraphRagMatchKind" mc="Infrastructure.EnumeratedPropertyType" uid="c0e19f1d-9aa7-4412-81c7-5c265d3d8176"/>
+    <PID name="GraphRag" mc="Infrastructure.ModuleComponent" uid="55ef8ea2-852c-45a7-84f4-e3af7dcab4b4"/>
+    <ATTRIBUTES>
+      <ATT name="BaseType">Enumerate</ATT>
+      <ATT name="Name"><![CDATA[GraphRagMatchKind]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Litteral">
+        <OBJECT>
+          <ID name="exact" mc="Infrastructure.PropertyEnumerationLitteral" uid="e188032e-e40b-4c81-ac8d-cda22666ab8f"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[exact]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="fuzzy" mc="Infrastructure.PropertyEnumerationLitteral" uid="83a815d4-aa27-4ef2-bb2c-8ed6175fb4c3"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[fuzzy]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="Descriptor">
+        <OBJECT>
+          <ID name="" mc="Infrastructure.Note" uid="a87dc810-7061-43a2-915c-90b66bef1112"/>
+          <ATTRIBUTES>
+            <ATT name="Content"><![CDATA[Graph-RAG identity matching mode: exact or fuzzy.]]></ATT>
+            <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+            <ATT name="Name"></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

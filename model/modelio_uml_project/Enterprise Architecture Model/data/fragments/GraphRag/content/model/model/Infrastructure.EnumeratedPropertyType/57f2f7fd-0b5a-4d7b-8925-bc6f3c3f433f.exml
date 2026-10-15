@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="GraphRagAnchorKind" version="4">
+  <OBJECT>
+    <ID name="GraphRagAnchorKind" mc="Infrastructure.EnumeratedPropertyType" uid="57f2f7fd-0b5a-4d7b-8925-bc6f3c3f433f"/>
+    <PID name="GraphRag" mc="Infrastructure.ModuleComponent" uid="55ef8ea2-852c-45a7-84f4-e3af7dcab4b4"/>
+    <ATTRIBUTES>
+      <ATT name="BaseType">Enumerate</ATT>
+      <ATT name="Name"><![CDATA[GraphRagAnchorKind]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Litteral">
+        <OBJECT>
+          <ID name="auto" mc="Infrastructure.PropertyEnumerationLitteral" uid="b4edbfaf-d8fe-400d-80cc-8292f5668ef5"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[auto]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="true" mc="Infrastructure.PropertyEnumerationLitteral" uid="f8592a00-8b95-465a-8d25-7542ca2846b6"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[true]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="false" mc="Infrastructure.PropertyEnumerationLitteral" uid="868e5827-bf35-46bd-bdff-0741827e12c7"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[false]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="Descriptor">
+        <OBJECT>
+          <ID name="" mc="Infrastructure.Note" uid="0c2c5778-55b8-431f-af94-485d64c1edf5"/>
+          <ATTRIBUTES>
+            <ATT name="Content"><![CDATA[Graph-RAG relevance-gate anchor: auto (when the class has an identity), true or false.]]></ATT>
+            <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+            <ATT name="Name"></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

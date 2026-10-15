@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="GraphRagProfile" version="4">
+  <OBJECT>
+    <ID name="GraphRagProfile" mc="Infrastructure.Profile" uid="07687c2d-6e08-423f-93cf-ca3a8df67d23"/>
+    <PID name="GraphRag" mc="Infrastructure.ModuleComponent" uid="55ef8ea2-852c-45a7-84f4-e3af7dcab4b4"/>
+    <ATTRIBUTES>
+      <ATT name="Name"><![CDATA[GraphRagProfile]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedStereotype">
+        <COMPID name="GraphRagEntity" mc="Infrastructure.Stereotype" uid="019b5920-7db9-4bf8-8954-032fccc94563"/>
+        <COMPID name="GraphRagIdentity" mc="Infrastructure.Stereotype" uid="47476423-4b01-4c52-b695-c3af103c50fc"/>
+        <COMPID name="GraphRagEmbed" mc="Infrastructure.Stereotype" uid="d93c8614-742f-4225-ad67-907efa2ee5d5"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

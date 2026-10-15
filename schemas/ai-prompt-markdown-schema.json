@@ -1,0 +1,1041 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://acceliance.com/ai-prompt/v1/ai-prompt-markdown-schema.json",
+  "title": "AI Prompt Engineering Schema — Markdown (gray-matter)",
+  "description": "Validates the object produced by parsing a Markdown prompt file with gray-matter (the return value of `matter(file)`). The YAML front-matter (`data`) carries the full structured AI prompt and mirrors ai-prompt-schema.json exactly (same properties, required rules, enums, defaults and constraints). The Markdown body (`content`) carries free-form, human-readable notes; the authoritative prompt fields — including the required `instructions.objective` — live in the front-matter. gray-matter also attaches helper fields (orig, language, matter, stringify) to its result, so additional top-level properties are permitted; only `data` is required and strictly validated. Authoring tip: to ease writing a new business profile prompt, draft it first with the Acceliance prompt generator at https://masterprompter.acceliance.fr, then transcribe the generated fields into this structure.",
+  "type": "object",
+  "required": ["data"],
+  "properties": {
+    "data":     { "$ref": "#/definitions/PromptFrontMatter" },
+    "content":  { "type": "string", "description": "The Markdown body of the file (everything after the front-matter). Free-form, human-readable notes or supporting prose. Optional: the authoritative prompt fields live in `data`." },
+    "excerpt":  { "type": "string", "description": "Optional excerpt extracted by gray-matter (when the `excerpt` option is enabled)." },
+    "orig":     { "description": "Raw original input as returned by gray-matter (string or Buffer)." },
+    "language": { "type": "string", "description": "Front-matter language detected by gray-matter (e.g. 'yaml', 'json', 'toml'). Defaults to YAML." },
+    "matter":   { "type": "string", "description": "Raw, unparsed front-matter string as returned by gray-matter." }
+  },
+  "additionalProperties": true,
+
+  "definitions": {
+
+    "PromptFrontMatter": {
+      "type": "object",
+      "description": "The YAML front-matter block of a Markdown prompt file. Root of the AI Prompt Engineering structure; a 1:1 mirror of ai-prompt-schema.json. Covers system instructions, context injection, few-shot learning, chain-of-thought reasoning, output formatting, style/tone, safety guardrails, multi-turn conversation, and tool definitions. Authoring tip: to ease writing a new business profile prompt, draft it first with the Acceliance prompt generator at https://masterprompter.acceliance.fr, then transcribe the generated fields into this structure.",
+      "required": ["instructions"],
+      "properties": {
+        "id":       { "type": "string", "description": "Unique identifier for the prompt." },
+        "version":  { "type": "string", "description": "Semantic version of the prompt (e.g. '1.0.0')." },
+        "language": { "type": "string", "default": "en", "description": "Primary language using ISO 639-1 codes." },
+        "model":    { "type": "string", "description": "Target AI model identifier (e.g. 'claude-sonnet-4-5', 'gpt-4')." },
+
+        "metadata":     { "$ref": "#/definitions/MetadataType" },
+        "system":       { "$ref": "#/definitions/SystemType" },
+        "context":      { "$ref": "#/definitions/ContextType" },
+        "examples":     { "$ref": "#/definitions/ExamplesType" },
+        "instructions": { "$ref": "#/definitions/InstructionsType" },
+        "input":        { "$ref": "#/definitions/InputType" },
+        "constraints":  { "$ref": "#/definitions/ConstraintsType" },
+        "output":       { "$ref": "#/definitions/OutputType" },
+        "reasoning":    { "$ref": "#/definitions/ReasoningType" },
+        "tools":        { "$ref": "#/definitions/ToolsType" },
+        "guardrails":   { "$ref": "#/definitions/GuardrailsType" },
+        "evaluation":   { "$ref": "#/definitions/EvaluationType" }
+      },
+      "additionalProperties": false
+    },
+
+    "MetadataType": {
+      "type": "object",
+      "description": "Metadata for prompt management, tracking, and documentation.",
+      "properties": {
+        "title":        { "type": "string", "description": "Human-readable title describing the prompt's purpose." },
+        "description":  { "type": "string", "description": "Detailed description of what the prompt accomplishes." },
+        "author":       { "type": "string", "description": "Name or identifier of the prompt creator." },
+        "created":      { "type": "string", "format": "date-time", "description": "Timestamp of creation." },
+        "modified":     { "type": "string", "format": "date-time", "description": "Timestamp of last modification." },
+        "tags":         { "type": "array", "items": { "type": "string" }, "description": "Classification tags." },
+        "category":     { "type": "string", "description": "Primary category (e.g. 'content-generation', 'data-analysis')." },
+        "use_case":     { "type": "string", "description": "Specific use case this prompt addresses." },
+        "dependencies": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/DependencyType" },
+          "description": "External dependencies required for the prompt."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "DependencyType": {
+      "type": "object",
+      "description": "Specification of a single external dependency.",
+      "required": ["value", "type"],
+      "properties": {
+        "value":    { "type": "string", "description": "Name or identifier of the dependency." },
+        "type":     { "$ref": "#/definitions/DependencyTypeEnum" },
+        "required": { "type": "boolean", "default": true, "description": "Whether the dependency is mandatory." }
+      },
+      "additionalProperties": false
+    },
+
+    "DependencyTypeEnum": {
+      "type": "string",
+      "enum": ["tool", "api", "knowledge_base", "model_capability", "plugin", "external_service"]
+    },
+
+    "SystemType": {
+      "type": "object",
+      "description": "System-level configuration defining the AI's identity, persona, capabilities, and behavioral guidelines.",
+      "properties": {
+        "role":            { "$ref": "#/definitions/RoleType" },
+        "persona":         { "$ref": "#/definitions/PersonaType" },
+        "capabilities":    { "$ref": "#/definitions/CapabilitiesType" },
+        "knowledge_scope": { "$ref": "#/definitions/KnowledgeScopeType" },
+        "behavior_rules":  {
+          "type": "array",
+          "items": { "$ref": "#/definitions/BehaviorRuleType" },
+          "description": "Fundamental behavioral rules."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "RoleType": {
+      "type": "object",
+      "description": "Definition of the AI's assumed role.",
+      "required": ["name"],
+      "properties": {
+        "name":            { "type": "string", "description": "Role title (e.g. 'Senior Data Analyst')." },
+        "description":     { "type": "string", "description": "Detailed description of the role." },
+        "expertise_level": { "$ref": "#/definitions/ExpertiseLevelEnum" },
+        "domain":          { "type": "array", "items": { "type": "string" }, "description": "Knowledge domains for this role." }
+      },
+      "additionalProperties": false
+    },
+
+    "ExpertiseLevelEnum": {
+      "type": "string",
+      "enum": ["novice", "intermediate", "advanced", "expert", "world_class"]
+    },
+
+    "PersonaType": {
+      "type": "object",
+      "description": "Detailed persona configuration.",
+      "properties": {
+        "name":                { "type": "string", "description": "Name for the AI persona." },
+        "personality_traits":  { "type": "array", "items": { "type": "string" }, "description": "Key personality traits (e.g. 'analytical', 'direct')." },
+        "communication_style": { "type": "array", "items": { "type": "string" }, "description": "Communication and writing style characteristics." },
+        "tone":                { "$ref": "#/definitions/ToneType" },
+        "background":          { "type": "string", "description": "Fictional background or experience." }
+      },
+      "additionalProperties": false
+    },
+
+    "ToneType": {
+      "type": "object",
+      "description": "Tone specification with optional intensity.",
+      "required": ["value"],
+      "properties": {
+        "value":     { "$ref": "#/definitions/ToneEnum" },
+        "intensity": { "$ref": "#/definitions/IntensityEnum" }
+      },
+      "additionalProperties": false
+    },
+
+    "ToneEnum": {
+      "type": "string",
+      "enum": ["professional","casual","friendly","formal","humorous","serious","empathetic","authoritative","encouraging","neutral","enthusiastic","diplomatic","direct","conversational"]
+    },
+
+    "IntensityEnum": {
+      "type": "string",
+      "enum": ["subtle", "moderate", "strong"],
+      "default": "moderate"
+    },
+
+    "CapabilitiesType": {
+      "type": "object",
+      "description": "Declaration of AI capabilities and limitations.",
+      "properties": {
+        "can_do":       { "type": "array", "items": { "type": "string" }, "description": "Capabilities the AI should utilize." },
+        "cannot_do":    { "type": "array", "items": { "type": "string" }, "description": "Things the AI should not attempt." },
+        "should_refer": { "type": "array", "items": { "$ref": "#/definitions/ReferralType" }, "description": "Situations requiring referral." }
+      },
+      "additionalProperties": false
+    },
+
+    "ReferralType": {
+      "type": "object",
+      "required": ["trigger", "target"],
+      "properties": {
+        "trigger": { "type": "string", "description": "Condition that triggers the referral." },
+        "target":  { "type": "string", "description": "Resource or entity to refer to." }
+      },
+      "additionalProperties": false
+    },
+
+    "KnowledgeScopeType": {
+      "type": "object",
+      "description": "Definition of the knowledge domain boundaries.",
+      "properties": {
+        "domains":          { "type": "array", "items": { "type": "string" }, "description": "Primary knowledge domains." },
+        "expertise_areas":  { "type": "array", "items": { "type": "string" }, "description": "Specific areas of deep expertise." },
+        "knowledge_cutoff": { "type": "string", "format": "date", "description": "Knowledge cutoff date if relevant." },
+        "out_of_scope":     { "type": "array", "items": { "type": "string" }, "description": "Topics explicitly outside scope." }
+      },
+      "additionalProperties": false
+    },
+
+    "BehaviorRuleType": {
+      "type": "object",
+      "description": "Single behavioral rule with priority and optional category.",
+      "required": ["value"],
+      "properties": {
+        "value":    { "type": "string", "description": "The behavioral rule text." },
+        "priority": { "$ref": "#/definitions/PriorityEnum" },
+        "category": { "type": "string", "description": "Category (e.g. 'safety', 'quality', 'style')." }
+      },
+      "additionalProperties": false
+    },
+
+    "PriorityEnum": {
+      "type": "string",
+      "enum": ["low", "normal", "high", "critical"],
+      "default": "normal"
+    },
+
+    "ContextType": {
+      "type": "object",
+      "description": "All contextual information: background, documents, data, conversation history, and environment.",
+      "properties": {
+        "background":            { "type": "string", "description": "General background information." },
+        "documents":             { "type": "array", "items": { "$ref": "#/definitions/DocumentType" } },
+        "data":                  { "type": "array", "items": { "$ref": "#/definitions/DatasetType" }, "description": "Structured data to process or reference." },
+        "conversation_history":  { "$ref": "#/definitions/ConversationHistoryType" },
+        "environment":           { "$ref": "#/definitions/EnvironmentType" },
+        "knowledge_base":        { "$ref": "#/definitions/KnowledgeBaseType" },
+        "variables":             { "type": "array", "items": { "$ref": "#/definitions/VariableType" } }
+      },
+      "additionalProperties": false
+    },
+
+    "DocumentType": {
+      "type": "object",
+      "description": "Individual document with content and metadata.",
+      "required": ["content"],
+      "properties": {
+        "id":      { "type": "string", "description": "Unique identifier for referencing this document." },
+        "type":    { "$ref": "#/definitions/DocumentTypeEnum" },
+        "format":  { "$ref": "#/definitions/ContentFormatEnum" },
+        "title":   { "type": "string" },
+        "content": { "type": "string" },
+        "source":  { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "DocumentTypeEnum": {
+      "type": "string",
+      "enum": ["reference","template","example","policy","specification","transcript","code","data"]
+    },
+
+    "ContentFormatEnum": {
+      "type": "string",
+      "enum": ["text","markdown","html","json","xml","yaml","csv"],
+      "default": "text"
+    },
+
+    "DatasetType": {
+      "type": "object",
+      "description": "Individual dataset with content and optional schema.",
+      "required": ["content"],
+      "properties": {
+        "format":      { "$ref": "#/definitions/ContentFormatEnum" },
+        "name":        { "type": "string" },
+        "description": { "type": "string" },
+        "schema":      { "type": "string", "description": "Schema definition for the data structure." },
+        "content":     { "type": "string", "description": "Actual data content." }
+      },
+      "additionalProperties": false
+    },
+
+    "ConversationHistoryType": {
+      "type": "object",
+      "description": "Previous conversation turns for context continuity.",
+      "required": ["turns"],
+      "properties": {
+        "max_turns": { "type": "integer", "minimum": 1, "description": "Maximum number of turns to consider." },
+        "turns": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ConversationTurnType" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ConversationTurnType": {
+      "type": "object",
+      "description": "Single conversation turn with role and content.",
+      "required": ["role", "content"],
+      "properties": {
+        "role":      { "$ref": "#/definitions/ConversationRoleEnum" },
+        "content":   { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+
+    "ConversationRoleEnum": {
+      "type": "string",
+      "enum": ["user", "assistant", "system", "tool"]
+    },
+
+    "EnvironmentType": {
+      "type": "object",
+      "description": "Environmental and situational context.",
+      "properties": {
+        "current_date":    { "type": "string", "format": "date" },
+        "current_time":    { "type": "string", "format": "time" },
+        "timezone":        { "type": "string" },
+        "locale":          { "type": "string" },
+        "platform":        { "type": "string" },
+        "user_context":    { "$ref": "#/definitions/UserContextType" },
+        "session_context": { "$ref": "#/definitions/SessionContextType" }
+      },
+      "additionalProperties": false
+    },
+
+    "UserContextType": {
+      "type": "object",
+      "description": "Information about the user interacting with the AI.",
+      "properties": {
+        "name":              { "type": "string" },
+        "role":              { "type": "string" },
+        "expertise_level":   { "$ref": "#/definitions/ExpertiseLevelEnum" },
+        "preferences":       { "type": "array", "items": { "$ref": "#/definitions/PreferenceType" } },
+        "custom_attributes": { "type": "array", "items": { "$ref": "#/definitions/CustomAttributeType" } }
+      },
+      "additionalProperties": false
+    },
+
+    "PreferenceType": {
+      "type": "object",
+      "description": "Key-value preference entry.",
+      "required": ["key", "value"],
+      "properties": {
+        "key":   { "type": "string" },
+        "value": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "CustomAttributeType": {
+      "type": "object",
+      "description": "Custom attribute as name-value pair.",
+      "required": ["name", "value"],
+      "properties": {
+        "name":  { "type": "string" },
+        "value": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "SessionContextType": {
+      "type": "object",
+      "description": "Session-specific context and state.",
+      "properties": {
+        "session_id":        { "type": "string" },
+        "started_at":        { "type": "string", "format": "date-time" },
+        "interaction_count": { "type": "integer", "minimum": 0 },
+        "state":             { "type": "array", "items": { "$ref": "#/definitions/StateEntryType" } }
+      },
+      "additionalProperties": false
+    },
+
+    "StateEntryType": {
+      "type": "object",
+      "description": "Key-value state entry.",
+      "required": ["key", "value"],
+      "properties": {
+        "key":   { "type": "string" },
+        "value": { "type": "string" },
+        "type":  { "type": "string", "description": "Data type hint." }
+      },
+      "additionalProperties": false
+    },
+
+    "KnowledgeBaseType": {
+      "type": "object",
+      "description": "Custom knowledge base for RAG-style retrieval augmentation.",
+      "required": ["entries"],
+      "properties": {
+        "source":  { "type": "string" },
+        "entries": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/KnowledgeEntryType" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "KnowledgeEntryType": {
+      "type": "object",
+      "description": "Individual knowledge entry with optional relevance scoring.",
+      "required": ["content"],
+      "properties": {
+        "relevance_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "topic":           { "type": "string" },
+        "content":         { "type": "string" },
+        "source":          { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "VariableType": {
+      "type": "object",
+      "description": "Dynamic variable for template substitution.",
+      "required": ["name", "value"],
+      "properties": {
+        "name":     { "type": "string", "description": "Variable name used for substitution (e.g. {{variable_name}})." },
+        "value":    { "type": "string" },
+        "type":     { "type": "string", "description": "Data type (string, number, boolean, date, etc.)." },
+        "required": { "type": "boolean", "default": true },
+        "default":  { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ExamplesType": {
+      "type": "object",
+      "description": "Few-shot learning examples demonstrating expected behavior.",
+      "required": ["examples"],
+      "properties": {
+        "strategy":    { "$ref": "#/definitions/ExampleStrategyEnum" },
+        "description": { "type": "string" },
+        "examples": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ExampleType" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExampleStrategyEnum": {
+      "type": "string",
+      "enum": ["zero_shot","one_shot","few_shot","many_shot"],
+      "default": "few_shot"
+    },
+
+    "ExampleType": {
+      "type": "object",
+      "description": "Individual example with input, output, and optional explanation.",
+      "required": ["input", "output"],
+      "properties": {
+        "id":          { "type": "string" },
+        "quality":     { "$ref": "#/definitions/QualityEnum" },
+        "category":    { "type": "string" },
+        "input":       { "type": "string" },
+        "output":      { "type": "string" },
+        "explanation": { "type": "string" },
+        "reasoning":   { "type": "string", "description": "Step-by-step reasoning for CoT examples." }
+      },
+      "additionalProperties": false
+    },
+
+    "QualityEnum": {
+      "type": "string",
+      "enum": ["good","bad","edge_case","ideal"],
+      "default": "good"
+    },
+
+    "InstructionsType": {
+      "type": "object",
+      "description": "Core task instructions defining the primary objective and execution steps.",
+      "required": ["objective"],
+      "properties": {
+        "complexity":        { "$ref": "#/definitions/ComplexityEnum" },
+        "objective":         { "type": "string", "description": "Clear statement of the primary goal." },
+        "task_description":  { "type": "string" },
+        "steps":             { "$ref": "#/definitions/StepsType" },
+        "subtasks":          { "type": "array", "items": { "$ref": "#/definitions/SubtaskType" } },
+        "requirements":      { "type": "array", "items": { "$ref": "#/definitions/RequirementType" } },
+        "success_criteria":  { "type": "array", "items": { "type": "string" }, "description": "Criteria defining successful completion." },
+        "priority_order":    { "type": "array", "items": { "type": "string" }, "description": "Priority items in descending order." }
+      },
+      "additionalProperties": false
+    },
+
+    "ComplexityEnum": {
+      "type": "string",
+      "enum": ["simple","moderate","complex","expert"]
+    },
+
+    "StepsType": {
+      "type": "object",
+      "description": "Ordered sequence of steps.",
+      "required": ["steps"],
+      "properties": {
+        "order_strict": { "type": "boolean", "default": true },
+        "steps": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/StepType" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "StepType": {
+      "type": "object",
+      "description": "Individual step with optional conditions and substeps.",
+      "required": ["action"],
+      "properties": {
+        "number":           { "type": "integer", "minimum": 1 },
+        "optional":         { "type": "boolean", "default": false },
+        "repeat":           { "type": "boolean", "default": false },
+        "action":           { "type": "string" },
+        "condition":        { "type": "string" },
+        "expected_outcome": { "type": "string" },
+        "substeps":         { "$ref": "#/definitions/StepsType" }
+      },
+      "additionalProperties": false
+    },
+
+    "SubtaskType": {
+      "type": "object",
+      "required": ["name","description"],
+      "properties": {
+        "id":           { "type": "string" },
+        "priority":     { "$ref": "#/definitions/PriorityEnum" },
+        "name":         { "type": "string" },
+        "description":  { "type": "string" },
+        "dependencies": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+
+    "RequirementType": {
+      "type": "object",
+      "description": "Specific requirement with type and priority.",
+      "required": ["value"],
+      "properties": {
+        "value":      { "type": "string" },
+        "type":       { "$ref": "#/definitions/RequirementTypeEnum" },
+        "priority":   { "$ref": "#/definitions/PriorityEnum" },
+        "verifiable": { "type": "boolean", "default": true }
+      },
+      "additionalProperties": false
+    },
+
+    "RequirementTypeEnum": {
+      "type": "string",
+      "enum": ["functional","non_functional","constraint","preference"],
+      "default": "functional"
+    },
+
+    "InputType": {
+      "type": "object",
+      "description": "User-provided input data for the AI to process.",
+      "properties": {
+        "format":      { "$ref": "#/definitions/ContentFormatEnum" },
+        "query":       { "type": "string", "description": "Primary user query or request." },
+        "data":        { "type": "string", "description": "Input data to be processed." },
+        "attachments": { "type": "array", "items": { "$ref": "#/definitions/AttachmentType" } },
+        "parameters":  { "type": "array", "items": { "$ref": "#/definitions/ParameterType" } }
+      },
+      "additionalProperties": false
+    },
+
+    "AttachmentType": {
+      "type": "object",
+      "required": ["name","type"],
+      "properties": {
+        "type":     { "type": "string", "description": "MIME type of the attachment." },
+        "encoding": { "type": "string", "default": "utf-8" },
+        "name":     { "type": "string" },
+        "content":  { "type": "string" },
+        "url":      { "type": "string", "format": "uri" }
+      },
+      "additionalProperties": false
+    },
+
+    "ParameterType": {
+      "type": "object",
+      "description": "Input processing parameter.",
+      "required": ["name", "value"],
+      "properties": {
+        "name":  { "type": "string" },
+        "value": { "type": "string" },
+        "type":  { "type": "string", "default": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ConstraintsType": {
+      "type": "object",
+      "description": "Constraints and limitations on the AI's behavior and output.",
+      "properties": {
+        "style":       { "$ref": "#/definitions/StyleConstraintsType" },
+        "content":     { "$ref": "#/definitions/ContentConstraintsType" },
+        "length":      { "$ref": "#/definitions/LengthConstraintsType" },
+        "terminology": { "$ref": "#/definitions/TerminologyConstraintsType" },
+        "behavior":    { "$ref": "#/definitions/BehaviorConstraintsType" },
+        "negative":    { "type": "array", "items": { "type": "string" }, "description": "Things to explicitly avoid (negative prompting)." }
+      },
+      "additionalProperties": false
+    },
+
+    "StyleConstraintsType": {
+      "type": "object",
+      "description": "Constraints on writing style, tone, and formatting.",
+      "properties": {
+        "tone":               { "$ref": "#/definitions/ToneType" },
+        "formality":          { "$ref": "#/definitions/FormalityEnum" },
+        "voice":              { "$ref": "#/definitions/VoiceEnum" },
+        "perspective":        { "$ref": "#/definitions/PerspectiveEnum" },
+        "vocabulary_level":   { "$ref": "#/definitions/VocabularyLevelEnum" },
+        "sentence_structure": { "type": "string" },
+        "custom_style":       { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+
+    "FormalityEnum": {
+      "type": "string",
+      "enum": ["very_formal","formal","semi_formal","casual","very_casual"]
+    },
+
+    "VoiceEnum": {
+      "type": "string",
+      "enum": ["active","passive","mixed"]
+    },
+
+    "PerspectiveEnum": {
+      "type": "string",
+      "enum": ["first_person_singular","first_person_plural","second_person","third_person","impersonal"]
+    },
+
+    "VocabularyLevelEnum": {
+      "type": "string",
+      "enum": ["basic","intermediate","advanced","technical","academic"]
+    },
+
+    "ContentConstraintsType": {
+      "type": "object",
+      "description": "Constraints on what content should or should not be included.",
+      "properties": {
+        "must_include":   { "type": "array", "items": { "type": "string" } },
+        "should_include": { "type": "array", "items": { "type": "string" } },
+        "must_exclude":   { "type": "array", "items": { "type": "string" } },
+        "should_exclude": { "type": "array", "items": { "type": "string" } },
+        "focus_areas":    { "type": "array", "items": { "type": "string" } },
+        "depth":          { "$ref": "#/definitions/DepthEnum" },
+        "coverage":       { "$ref": "#/definitions/CoverageEnum" }
+      },
+      "additionalProperties": false
+    },
+
+    "DepthEnum": {
+      "type": "string",
+      "enum": ["shallow","moderate","deep","comprehensive"]
+    },
+
+    "CoverageEnum": {
+      "type": "string",
+      "enum": ["narrow","focused","balanced","broad","exhaustive"]
+    },
+
+    "LengthConstraintsType": {
+      "type": "object",
+      "description": "Constraints on output length.",
+      "properties": {
+        "min_length":    { "$ref": "#/definitions/LengthValueType" },
+        "max_length":    { "$ref": "#/definitions/LengthValueType" },
+        "target_length": { "$ref": "#/definitions/LengthValueType" },
+        "sections":      { "type": "array", "items": { "$ref": "#/definitions/SectionLengthType" } }
+      },
+      "additionalProperties": false
+    },
+
+    "LengthValueType": {
+      "type": "object",
+      "description": "Length value with unit.",
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "integer", "minimum": 1 },
+        "unit":  { "$ref": "#/definitions/LengthUnitEnum" }
+      },
+      "additionalProperties": false
+    },
+
+    "LengthUnitEnum": {
+      "type": "string",
+      "enum": ["characters","words","sentences","paragraphs","pages","tokens"],
+      "default": "words"
+    },
+
+    "SectionLengthType": {
+      "type": "object",
+      "required": ["name","length"],
+      "properties": {
+        "name":   { "type": "string" },
+        "length": { "$ref": "#/definitions/LengthValueType" }
+      },
+      "additionalProperties": false
+    },
+
+    "TerminologyConstraintsType": {
+      "type": "object",
+      "description": "Constraints on terminology and vocabulary usage.",
+      "properties": {
+        "preferred_terms":   { "type": "array", "items": { "type": "string" } },
+        "avoided_terms":     { "type": "array", "items": { "type": "string" } },
+        "glossary":          { "type": "array", "items": { "$ref": "#/definitions/GlossaryEntryType" } },
+        "domain_vocabulary": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "GlossaryEntryType": {
+      "type": "object",
+      "required": ["term","definition"],
+      "properties": {
+        "term":       { "type": "string" },
+        "definition": { "type": "string" },
+        "usage_note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "BehaviorConstraintsType": {
+      "type": "object",
+      "description": "Constraints on AI behavior during task execution.",
+      "properties": {
+        "must_do":               { "type": "array", "items": { "type": "string" } },
+        "must_not":              { "type": "array", "items": { "type": "string" } },
+        "error_handling":        { "type": "string" },
+        "uncertainty_handling":  { "type": "string" },
+        "fallback_behavior":     { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "OutputType": {
+      "type": "object",
+      "description": "Specification of the desired output format, structure, and presentation.",
+      "required": ["format"],
+      "properties": {
+        "format":    { "$ref": "#/definitions/OutputFormatType" },
+        "structure": { "$ref": "#/definitions/OutputStructureType" },
+        "schema":    { "type": "string", "description": "Schema definition for structured output (e.g. JSON Schema)." },
+        "template":  { "type": "string", "description": "Template pattern for the output." },
+        "sections":  { "type": "array", "items": { "$ref": "#/definitions/OutputSectionType" } },
+        "prefix":    { "type": "string", "description": "Text to prepend to the response." },
+        "suffix":    { "type": "string", "description": "Text to append to the response." }
+      },
+      "additionalProperties": false
+    },
+
+    "OutputFormatType": {
+      "type": "object",
+      "description": "Output format with optional strict enforcement.",
+      "required": ["value"],
+      "properties": {
+        "value":  { "$ref": "#/definitions/OutputFormatEnum" },
+        "strict": { "type": "boolean", "default": false }
+      },
+      "additionalProperties": false
+    },
+
+    "OutputFormatEnum": {
+      "type": "string",
+      "enum": ["text","markdown","html","json","xml","yaml","csv","table","list","code","structured"]
+    },
+
+    "OutputStructureType": {
+      "type": "object",
+      "description": "Structural organization requirements.",
+      "properties": {
+        "organization":      { "$ref": "#/definitions/OrganizationEnum" },
+        "heading_style":     { "type": "string" },
+        "numbering":         { "type": "boolean" },
+        "include_toc":       { "type": "boolean" },
+        "include_summary":   { "type": "boolean" },
+        "summary_position":  { "$ref": "#/definitions/PositionEnum" }
+      },
+      "additionalProperties": false
+    },
+
+    "OrganizationEnum": {
+      "type": "string",
+      "enum": ["linear","hierarchical","chronological","categorical","priority_based","problem_solution","compare_contrast","cause_effect"]
+    },
+
+    "PositionEnum": {
+      "type": "string",
+      "enum": ["beginning","end","both"]
+    },
+
+    "OutputSectionType": {
+      "type": "object",
+      "description": "Definition of a single output section.",
+      "required": ["name"],
+      "properties": {
+        "order":            { "type": "integer", "minimum": 1 },
+        "required":         { "type": "boolean", "default": true },
+        "name":             { "type": "string" },
+        "description":      { "type": "string" },
+        "required_content": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ReasoningType": {
+      "type": "object",
+      "description": "Configuration for reasoning strategies (CoT, ToT, etc.).",
+      "required": ["strategy"],
+      "properties": {
+        "strategy":          { "$ref": "#/definitions/ReasoningStrategyEnum" },
+        "show_reasoning":    { "type": "boolean", "default": true },
+        "reasoning_format":  { "$ref": "#/definitions/ReasoningFormatType" },
+        "verification":      { "$ref": "#/definitions/VerificationType" },
+        "confidence":        { "$ref": "#/definitions/ConfidenceType" }
+      },
+      "additionalProperties": false
+    },
+
+    "ReasoningStrategyEnum": {
+      "type": "string",
+      "enum": ["direct","chain_of_thought","tree_of_thought","step_by_step","divide_and_conquer","analogical","socratic","hypothesis_testing","pros_cons","recursive","self_reflection"]
+    },
+
+    "ReasoningFormatType": {
+      "type": "object",
+      "properties": {
+        "separator":          { "type": "string" },
+        "step_prefix":        { "type": "string" },
+        "conclusion_marker":  { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "VerificationType": {
+      "type": "object",
+      "description": "Self-verification configuration.",
+      "properties": {
+        "verify_facts":         { "type": "boolean", "default": false },
+        "verify_logic":         { "type": "boolean", "default": false },
+        "verify_completeness":  { "type": "boolean", "default": false },
+        "verification_prompt":  { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ConfidenceType": {
+      "type": "object",
+      "description": "Confidence level reporting configuration.",
+      "properties": {
+        "report_confidence":   { "type": "boolean", "default": false },
+        "confidence_scale":    { "type": "string" },
+        "explain_uncertainty": { "type": "boolean", "default": false }
+      },
+      "additionalProperties": false
+    },
+
+    "ToolsType": {
+      "type": "object",
+      "description": "Definition of tools and functions the AI can invoke.",
+      "required": ["tools"],
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ToolType" },
+          "minItems": 1
+        },
+        "tool_selection": { "$ref": "#/definitions/ToolSelectionType" }
+      },
+      "additionalProperties": false
+    },
+
+    "ToolType": {
+      "type": "object",
+      "description": "Definition of a single tool/function.",
+      "required": ["name","description"],
+      "properties": {
+        "id":             { "type": "string" },
+        "name":           { "type": "string" },
+        "description":    { "type": "string" },
+        "parameters":     { "type": "array", "items": { "$ref": "#/definitions/ToolParameterType" } },
+        "returns":        { "$ref": "#/definitions/ToolReturnsType" },
+        "examples":       { "type": "array", "items": { "$ref": "#/definitions/ToolExampleType" } },
+        "error_handling": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ToolParameterType": {
+      "type": "object",
+      "description": "Definition of a tool parameter.",
+      "required": ["name","type","description"],
+      "properties": {
+        "required":    { "type": "boolean", "default": true },
+        "name":        { "type": "string" },
+        "type":        { "type": "string" },
+        "description": { "type": "string" },
+        "enum":        { "type": "array", "items": { "type": "string" }, "description": "Allowed values." },
+        "default":     { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ToolReturnsType": {
+      "type": "object",
+      "required": ["type","description"],
+      "properties": {
+        "type":        { "type": "string" },
+        "description": { "type": "string" },
+        "schema":      { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ToolExampleType": {
+      "type": "object",
+      "required": ["call"],
+      "properties": {
+        "description": { "type": "string" },
+        "call":        { "type": "string" },
+        "result":      { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ToolSelectionType": {
+      "type": "object",
+      "description": "Configuration for how tools should be selected and used.",
+      "required": ["mode"],
+      "properties": {
+        "mode":              { "$ref": "#/definitions/ToolModeEnum" },
+        "max_calls":         { "type": "integer", "minimum": 1 },
+        "parallel_calls":    { "type": "boolean" },
+        "fallback_behavior": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "ToolModeEnum": {
+      "type": "string",
+      "enum": ["auto","required","none","specific"]
+    },
+
+    "GuardrailsType": {
+      "type": "object",
+      "description": "Safety guardrails and content policies.",
+      "properties": {
+        "content_policy":      { "$ref": "#/definitions/ContentPolicyType" },
+        "safety_rules":        { "type": "array", "items": { "$ref": "#/definitions/SafetyRuleType" } },
+        "boundaries":          { "$ref": "#/definitions/BoundariesType" },
+        "fallback_responses":  { "type": "array", "items": { "$ref": "#/definitions/FallbackType" } }
+      },
+      "additionalProperties": false
+    },
+
+    "ContentPolicyType": {
+      "type": "object",
+      "description": "Content moderation and filtering policies.",
+      "properties": {
+        "allowed_topics":     { "type": "array", "items": { "type": "string" } },
+        "restricted_topics":  { "type": "array", "items": { "type": "string" } },
+        "sensitivity_level":  { "$ref": "#/definitions/SensitivityLevelEnum" },
+        "audience":           { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "SensitivityLevelEnum": {
+      "type": "string",
+      "enum": ["strict","moderate","permissive"]
+    },
+
+    "SafetyRuleType": {
+      "type": "object",
+      "description": "Individual safety rule specification.",
+      "required": ["description","action"],
+      "properties": {
+        "severity":    { "$ref": "#/definitions/SeverityEnum" },
+        "description": { "type": "string" },
+        "trigger":     { "type": "string" },
+        "action":      { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "SeverityEnum": {
+      "type": "string",
+      "enum": ["low","medium","high","critical"],
+      "default": "high"
+    },
+
+    "BoundariesType": {
+      "type": "object",
+      "description": "Operational boundaries defining what the AI can and cannot do.",
+      "properties": {
+        "scope_limit":   { "type": "array", "items": { "type": "string" } },
+        "action_limit":  { "type": "array", "items": { "type": "string" } },
+        "claim_limit":   { "type": "array", "items": { "type": "string" } },
+        "disclosure":    { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+
+    "FallbackType": {
+      "type": "object",
+      "description": "Predefined fallback response for specific situations.",
+      "required": ["trigger","response"],
+      "properties": {
+        "trigger":  { "type": "string" },
+        "response": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "EvaluationType": {
+      "type": "object",
+      "description": "Self-evaluation criteria for the AI to assess its output.",
+      "required": ["criteria"],
+      "properties": {
+        "criteria":                { "type": "array", "items": { "$ref": "#/definitions/CriterionType" }, "minItems": 1 },
+        "rubric":                  { "type": "array", "items": { "$ref": "#/definitions/RubricLevelType" } },
+        "self_critique":           { "type": "boolean", "default": false },
+        "improvement_suggestions": { "type": "boolean", "default": false }
+      },
+      "additionalProperties": false
+    },
+
+    "CriterionType": {
+      "type": "object",
+      "description": "Individual evaluation criterion.",
+      "required": ["name","description"],
+      "properties": {
+        "name":        { "type": "string" },
+        "description": { "type": "string" },
+        "weight":      { "type": "number", "description": "Relative weight of this criterion." }
+      },
+      "additionalProperties": false
+    },
+
+    "RubricLevelType": {
+      "type": "object",
+      "description": "Rubric level definition for scoring.",
+      "required": ["score","label","description"],
+      "properties": {
+        "score":       { "type": "integer" },
+        "label":       { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+
+  }
+}

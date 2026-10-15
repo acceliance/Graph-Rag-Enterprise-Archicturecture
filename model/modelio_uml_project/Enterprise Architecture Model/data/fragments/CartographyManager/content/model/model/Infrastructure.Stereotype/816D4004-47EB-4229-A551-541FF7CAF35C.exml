@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="CartographyManagerReferential" version="4">
+  <OBJECT>
+    <ID name="CartographyManagerReferential" mc="Infrastructure.Stereotype" uid="816D4004-47EB-4229-A551-541FF7CAF35C"/>
+    <PID name="CartographyManagerProfile" mc="Infrastructure.Profile" uid="C563B0C9-8BF9-4BEE-93B9-F89DED4E9584"/>
+    <ATTRIBUTES>
+      <ATT name="Image"><![CDATA[CartographyManager/res/bmp/class_referential_48_48.png]]></ATT>
+      <ATT name="Icon"><![CDATA[CartographyManager/res/bmp/class_referential_24_24_new.png]]></ATT>
+      <ATT name="IsHidden">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="LabelKey"><![CDATA[CartographyManagerReferential]]></ATT>
+      <ATT name="BaseClassName"><![CDATA[Class]]></ATT>
+      <ATT name="Name"><![CDATA[CartographyManagerReferential]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedTable">
+        <COMPID name="PropertyTableDefinition" mc="Infrastructure.PropertyTableDefinition" uid="7e93e1b2-b808-4b24-b373-2185e44628e8"/>
+      </COMP>
+      <LINK relation="Parent">
+        <ID name="CartographyManagerCartography" mc="Infrastructure.Stereotype" uid="6a34537e-8d53-4358-8b40-41bdf91c9218"/>
+      </LINK>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

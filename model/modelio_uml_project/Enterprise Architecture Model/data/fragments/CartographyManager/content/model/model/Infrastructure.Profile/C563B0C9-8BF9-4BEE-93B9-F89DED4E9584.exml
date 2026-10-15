@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="CartographyManagerProfile" version="4">
+  <OBJECT>
+    <ID name="CartographyManagerProfile" mc="Infrastructure.Profile" uid="C563B0C9-8BF9-4BEE-93B9-F89DED4E9584"/>
+    <PID name="CartographyManager" mc="Infrastructure.ModuleComponent" uid="6cfe0a2f-3a8b-4354-a3c8-e9c46d3eacb8"/>
+    <ATTRIBUTES>
+      <ATT name="Name"><![CDATA[CartographyManagerProfile]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedStereotype">
+        <COMPID name="CartographyManagerRootOfTheModel" mc="Infrastructure.Stereotype" uid="6a39137e-8d53-4358-8a20-41bdf91c9218"/>
+        <COMPID name="CartographyManagerTranslation" mc="Infrastructure.Stereotype" uid="26EE79C3-B9DB-4D36-BB23-E4AC8D3D851C"/>
+        <COMPID name="CartographyManagerCartography" mc="Infrastructure.Stereotype" uid="6a34537e-8d53-4358-8b40-41bdf91c9218"/>
+        <COMPID name="CartographyManagerReferential" mc="Infrastructure.Stereotype" uid="816D4004-47EB-4229-A551-541FF7CAF35C"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

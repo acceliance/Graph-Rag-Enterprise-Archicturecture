@@ -1,0 +1,12 @@
+# Shell scripts and compose files must keep LF endings whatever the checkout OS:
+# a CRLF up.sh fails with "bad interpreter" on Linux.
+*.sh              text eol=lf
+*.yaml            text eol=lf
+*.yml             text eol=lf
+.env.example      text eol=lf
+*.conf.example    text eol=lf
+*.md              text eol=lf
+*.json            text eol=lf
+*.ps1             text eol=crlf
+*.pdf             binary
+*.jmdac           binary

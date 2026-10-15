@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="GraphRag" version="4">
+  <OBJECT>
+    <ID name="GraphRag" mc="Infrastructure.ModuleComponent" uid="55ef8ea2-852c-45a7-84f4-e3af7dcab4b4"/>
+    <ATTRIBUTES>
+      <ATT name="LicenseKey">0</ATT>
+      <ATT name="MajVersion">5</ATT>
+      <ATT name="MinVersion">4</ATT>
+      <ATT name="MinMinVersion"><![CDATA[1]]></ATT>
+      <ATT name="MinBinVersionCompatibility"></ATT>
+      <ATT name="JavaClassName"><![CDATA[fr.acceliance.modelio.graphrag.impl.GraphRagModule]]></ATT>
+      <ATT name="Name"><![CDATA[GraphRag]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedPropertyType">
+        <COMPID name="GraphRagMatchKind" mc="Infrastructure.EnumeratedPropertyType" uid="c0e19f1d-9aa7-4412-81c7-5c265d3d8176"/>
+        <COMPID name="GraphRagAnchorKind" mc="Infrastructure.EnumeratedPropertyType" uid="57f2f7fd-0b5a-4d7b-8925-bc6f3c3f433f"/>
+        <COMPID name="GraphRagNormaliseRule" mc="Infrastructure.EnumeratedPropertyType" uid="6653041e-f4c5-40a4-98d8-105567303fbf"/>
+      </COMP>
+      <COMP relation="OwnedProfile">
+        <COMPID name="GraphRagProfile" mc="Infrastructure.Profile" uid="07687c2d-6e08-423f-93cf-ca3a8df67d23"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

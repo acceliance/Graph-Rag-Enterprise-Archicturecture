@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="DiagramColorizerProfile" version="4">
+  <OBJECT>
+    <ID name="DiagramColorizerProfile" mc="Infrastructure.Profile" uid="f82ec883-4412-4eab-85cd-32fe69654131"/>
+    <PID name="DiagramColorizer" mc="Infrastructure.ModuleComponent" uid="a6d596f2-440b-4f56-883a-dbe61bf3d804"/>
+    <ATTRIBUTES>
+      <ATT name="Name"><![CDATA[DiagramColorizerProfile]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DefinedStereotype">
+        <COMPID name="DiagramColorizerColorClass" mc="Infrastructure.Stereotype" uid="ef4401fc-f5d4-4b8d-b4f9-4f81cfc7a8ce"/>
+        <COMPID name="DiagramColorizerColorPackage" mc="Infrastructure.Stereotype" uid="693f54c9-4ddd-9354-9f39-e147e4f5af32"/>
+        <COMPID name="AccelianceDiagram" mc="Infrastructure.Stereotype" uid="3FEB7109-7873-479C-953F-624D272BC997"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>
