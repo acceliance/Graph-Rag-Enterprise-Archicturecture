@@ -36,6 +36,7 @@ This repository holds everything to run that agent for enterprise architecture: 
 | [`schemas/`](schemas/README.md) | JSON Schemas for the model, the ingestion ledger and the prompt files |
 | [`modelio/`](modelio/) | The GraphRag module for Modelio (`GraphRag_5.4.01.jmdac`) that declares the Graph-RAG stereotypes |
 | [`DEPLOY.md`](DEPLOY.md) | The full deployment guide: sizing, HTTPS, AI provider settings, backup, upgrade, troubleshooting |
+| [`docs/`](docs/) | The [tutorial](docs/tutorial/README.md) and the [AI model recommendations](docs/ai-model-recommendations.md): OpenAI and Anthropic models benchmarked on the sample documents for extraction quality and token cost |
 
 ## Quick start
 
@@ -52,7 +53,7 @@ scripts/up.sh           # Linux, macOS
 The script creates `.env` with generated secrets, pulls the images, starts the stack and prints the URL, `http://localhost:8080` by default. Then:
 
 1. Create the administrator account on the first visit.
-2. Enter your AI provider settings under **Admin ▸ AI settings**.
+2. Enter your AI provider settings under **Admin ▸ AI settings**. For the models to choose, see the [AI model recommendations](docs/ai-model-recommendations.md). As of October 2026: `gpt-5.6-luna` for extraction (about $0.0015 per page), `claude-haiku-5-5` for the agent (about $0.01 per question).
 3. On the **Model** screen, upload [`model/enterprise-architecture-model.json`](model/enterprise-architecture-model.json), then *Validate* and *Initialise*.
 4. Upload the PDFs from [`samples/source-docs/`](samples/source-docs/) (or your own).
 5. On the **Profiles** screen, click **New profile**, name it `enterprise-architect` and paste [`samples/profiles/enterprise-architect.md`](samples/profiles/enterprise-architect.md); then select it on the **Agent** screen and ask questions.
